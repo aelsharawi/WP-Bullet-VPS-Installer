@@ -1,0 +1,58 @@
+#WP-Bullet.com nginx reverse proxy cache WordPress
+#define proxy cache location, levels for format, zone which is used, maximum size (here 200 MB) and how long cache is valid for 600m
+proxy_cache_path  /var/run/proxy_cache levels=1:2 keys_zone=WORDPRESS-PROXY:10m max_size=200m inactive=600m;
+#defines the cache key used to store the files
+proxy_cache_key $scheme$host$request_uri; 
+ 
+server { 
+listen          80; 
+server_name     Web.Server.IP; 
+access_log /var/log/nginx/proxy-access.log; 
+error_log /var/log/nginx/proxy-error.log; 
+ 
+location / { 
+  set $do_not_cache 0; 
+  set $bypass 0; 
+  #set $bypass $http_secret_header; 
+
+#security checks for purging, purge requests must come from Web Server
+if ($remote_addr ~ "^(127.0.0.1|Web.Server.IP)$") { 
+        set $bypass $http_secret_header; 
+    }
+
+# set the do not cache so wordpress admins wil not see cached content
+if ($http_cookie ~* "comment_author_|wordpress_(?!test_cookie)|wp-postpass_" ) { 
+            set $do_not_cache 1; 
+        } 
+ 
+        proxy_set_header Host $host; 
+        proxy_redirect off; 
+        proxy_cache WORDPRESS-PROXY; 
+        proxy_cache_revalidate on; 
+        proxy_ignore_headers  Expires Cache-Control; 
+        proxy_cache_use_stale  error timeout invalid_header updating http_502;
+        # allow bypass for requests that come from Web Server
+        proxy_cache_bypass $bypass;
+        # do not cache WordPress admins or logged in users
+        proxy_no_cache  $do_not_cache;
+        #adds status of items in the reverse proxy cache, essential for testing
+        add_header X-Cache  $upstream_cache_status;
+        # response codes to cache and for how long
+        proxy_cache_valid 200 301 302 500m; 
+        proxy_cache_valid 404 1m; 
+        #can rename PURGE to whatever you want, should restrict it to backend server requests for security 
+        proxy_cache_purge PURGE from 127.0.0.1 Web.Server.IP;
+        # pass requests to the web server running WordPress (can be a unix socket if on same VPS or server)
+        proxy_pass  http://127.0.0.1:8080; 
+     } 
+
+#set the purge URL location to purge by URI, (/.*) captures the URI which is resused as $1 in proxy_cache_purge
+location ~ /purge(/.*) { 
+            allow             127.0.0.1; 
+            allow             Web.Server.IP; 
+            deny              all;
+            # $1 replaces $request_uri since we grab it from (/.*), this matches our proxy_cache_key
+            proxy_cache_purge WORDPRESS-PROXY $scheme$host$1; 
+        } 
+ 
+} 

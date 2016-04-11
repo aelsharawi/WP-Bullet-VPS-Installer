@@ -267,6 +267,25 @@ service varnish restart
 service haproxy restart
 }
 
+install_apache_nginx () {
+#--------------------------------------------------------------------------------------------------------------------------------
+# Install Apache with nginx reverse proxy with WordPress
+#--------------------------------------------------------------------------------------------------------------------------------
+get_user_input
+install_dotdeb
+install_apache
+install_mariadb
+install_wordpress
+#fix apache ports to listen on 8080
+sed -i s"/80/8080/g" /etc/apache2/ports.conf
+sed -i s"/80/8080/g" /etc/apache2/sites-available/${WORDPRESSSITE}.conf
+#nginx reverse proxy part
+install_nginx
+NGINXCONFIG=$(find / -iname reverseproxy | grep configs)
+cp $NGINXCONFIG /etc/nginx/sites-available/reverseproxy
+ln -s /etc/nginx/sites-available/reverseproxy /etc/nginx/sites-enabled/reverseproxy
+service nginx restart
+
 install_apache () {
 #--------------------------------------------------------------------------------------------------------------------------------
 # Install Apache with WordPress
@@ -751,6 +770,7 @@ whiptail --ok-button "Install" --title "WP Bullet VPS Installer for Ubuntu/Debia
 "nginx + Varnish" "nginx with Varnish caching        " off \
 "nginx + Varnish + haproxy" "nginx + Varnish caching + haproxy SSL" off \
 "Apache" "Apache" off \
+"Apache with nginx cache" "Apache with nginx reverse proxy cache" off \
 "Webmin" "Easy GUI VPS administration" off \
 "CSF Firewall" "Comprehensive Firewall" off \
 "Suhosin" "Enable PHP Security" off \
@@ -768,6 +788,7 @@ case $choice in
 	"nginx + Varnish") 			ins_nginx_varnish="true";;
 	"nginx + Varnish + haproxy") 		ins_nginx_varnish_haproxy="true";;
 	"Apache") 				ins_apache="true";;
+	"Apache with nginx cache") 		ins_apache_nginx="true";;
 	"Webmin") 				ins_webmin="true";;
 	"CSF Firewall") 			ins_csf="true";;
 	"Suhosin") 				ins_suhosin="true";;
@@ -786,6 +807,7 @@ if [[ "$ins_nginx_fastcgissl" == "true" ]]; 		then install_nginx_fastcgissl;		fi
 if [[ "$ins_nginx_varnish" == "true" ]]; 		then install_nginx_varnish;		fi
 if [[ "$ins_nginx_varnish_haproxy" == "true" ]]; 	then install_nginx_varnish_haproxy;	fi
 if [[ "$ins_apache" == "true" ]]; 			then install_apache;			fi
+if [[ "$ins_apache_nginx" == "true" ]]; 		then install_apache_nginx;		fi
 if [[ "$ins_webmin" == "true" ]]; 			then install_webmin;			fi
 if [[ "$ins_csf" == "true" ]]; 				then install_csf;			fi
 if [[ "$ins_suhosin" == "true" ]]; 			then install_suhosin;			fi

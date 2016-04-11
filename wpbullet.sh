@@ -285,6 +285,7 @@ NGINXCONFIG=$(find / -iname reverseproxy | grep configs)
 cp $NGINXCONFIG /etc/nginx/sites-available/reverseproxy
 ln -s /etc/nginx/sites-available/reverseproxy /etc/nginx/sites-enabled/reverseproxy
 service nginx restart
+}
 
 install_apache () {
 #--------------------------------------------------------------------------------------------------------------------------------

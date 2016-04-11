@@ -271,8 +271,6 @@ install_apache_nginx () {
 #--------------------------------------------------------------------------------------------------------------------------------
 # Install Apache with nginx reverse proxy with WordPress
 #--------------------------------------------------------------------------------------------------------------------------------
-get_user_input
-install_dotdeb
 install_apache
 install_mariadb
 install_wordpress

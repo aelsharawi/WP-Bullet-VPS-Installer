@@ -282,6 +282,7 @@ cp $NGINXCONFIG /etc/nginx/sites-available/reverseproxy
 ln -s /etc/nginx/sites-available/reverseproxy /etc/nginx/sites-enabled/reverseproxy
 sed -i s"/example.com/${WORDPRESSSITE}/g" /etc/nginx/sites-enabled/reverseproxy
 sed -i s"/Web.Server.IP/${SERVERIP}/g" /etc/nginx/sites-enabled/reverseproxy
+service apache2 restart
 service nginx restart
 }
 

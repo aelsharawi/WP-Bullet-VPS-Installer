@@ -57,7 +57,7 @@ exitstatus=$?; if [ $exitstatus = 1 ]; then exit 1; fi
 WORDPRESSSQLPASS=$(date +%s | sha256sum | base64 | head -c 32 ; echo)
 WORDPRESSSQLPASS=$(whiptail --inputbox "Choose the WordPress MySQL password" 8 78 $WORDPRESSSQLPASS --title "WP-Bullet.com" 3>&1 1>&2 2>&3)
 exitstatus=$?; if [ $exitstatus = 1 ]; then exit 1; fi
-WORDPRESSSITE=$(whiptail --inputbox "Choose the WordPress sitename (include domain extension)" 8 78 "WP-Bullet.com" --title "wp-bullet.com" 3>&1 1>&2 2>&3)
+WORDPRESSSITE=$(whiptail --inputbox "Choose the WordPress sitename (include domain extension without www.)" 8 78 "WP-Bullet.com" --title "wp-bullet.com" 3>&1 1>&2 2>&3)
 exitstatus=$?; if [ $exitstatus = 1 ]; then exit 1; fi
 fi
 #fi

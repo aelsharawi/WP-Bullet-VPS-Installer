@@ -272,8 +272,6 @@ install_apache_nginx () {
 # Install Apache with nginx reverse proxy with WordPress
 #--------------------------------------------------------------------------------------------------------------------------------
 install_apache
-install_mariadb
-install_wordpress
 #fix apache ports to listen on 8080
 sed -i s"/80/8080/g" /etc/apache2/ports.conf
 sed -i s"/80/8080/g" /etc/apache2/sites-available/${WORDPRESSSITE}.conf

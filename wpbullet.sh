@@ -328,11 +328,12 @@ install_nginx () {
 #--------------------------------------------------------------------------------------------------------------------------------
 install_dotdeb
 debconf-apt-progress -- apt-get update
-debconf-apt-progress -- apt-get install nginx -y
-cp configs/nginx/nginx.conf /etc/nginx/nginx.conf
+debconf-apt-progress -- apt-get install nginx nginx-extras -y
+NGINXCONFIGs=$(find / -iname configs)
+cp $NGINXCONFIG/nginx/nginx.conf /etc/nginx/nginx.conf
 unlink /etc/nginx/sites-enabled/default
 debconf-apt-progress -- apt-get install curl php5-curl php5-mysql php5-cli php5-fpm php5-gd -y
-cp configs/www.conf /etc/php5/fpm/pool.d/www.conf
+cp $NGINXCONFIG/www.conf /etc/php5/fpm/pool.d/www.conf
 }
 
 install_wordpress () {

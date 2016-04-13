@@ -52,7 +52,7 @@ server {
                 fastcgi_pass unix:/var/run/php5-fpm.sock;
                 fastcgi_split_path_info ^(.+\.php)(.*)$;
                 fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
-                fastcgi_cache_bypass $skip_cache;
+                fastcgi_cache_bypass $http_secret_header $skip_cache;
                 fastcgi_no_cache $skip_cache;
                 fastcgi_cache WORDPRESS;
                 fastcgi_cache_valid 404      1m;
@@ -68,7 +68,6 @@ server {
         log_not_found off;
         access_log off;
         }
-
 
         location = /robots.txt { access_log off; log_not_found off; }
         location ~ /\. { deny  all; access_log off; log_not_found off; }

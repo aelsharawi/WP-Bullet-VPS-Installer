@@ -94,6 +94,12 @@ if (req.url ~ "/\?s\=") {
 	return ( pass ); 
 }
 
+# Pass all wp-cron requests
+
+if (req.url ~ "wp-cron\.php.*") {
+       return ( pass );
+}
+
 # CLEAN UP THE ENCODING HEADER.
   # SET TO GZIP, DEFLATE, OR REMOVE ENTIRELY.  WITH VARY ACCEPT-ENCODING
   # VARNISH WILL CREATE SEPARATE CACHES FOR EACH

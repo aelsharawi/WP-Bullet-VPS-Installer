@@ -11,4 +11,4 @@ To install
     
 Use spacebar to choose items to install then tab to choose Install and press Enter
 
-![Screenshot](http://imgur.com/b38CScy)
+![Screenshot](http://i.imgur.com/b38CScy.png)

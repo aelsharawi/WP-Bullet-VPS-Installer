@@ -9,19 +9,30 @@ show_summary() {
 #--------------------------------------------------------------------------------------------------------------------------------
 # Show summary
 #--------------------------------------------------------------------------------------------------------------------------------
+#define colors for output
+red=`tput setaf 1`
+green=`tput setaf 2`
+yellow==`tput setaf 3`
+blue=`tput setaf 4`
+reset=`tput sgr0`
+#echo "${red}red text ${green}green text${reset}"
+echo "${yellow}=== WP Bullet WordPress VPS Installer Complete ===${reset}"
+echo ""
+echo "${red}Copy the credentials somewhere safe in case you ever need them!${reset}"
 if [ "${ins_nginx_fastcgi}" == "true" ] || [ "${ins_nginx_fastcgissl}" == "true" ] || [ "${ins_nginx_varnish}" == "true" ] || [ "${ins_nginx_varnish_haproxy}" == "true" ] || [ "${ins_apache}" == "true" ] || [ "${ins_apache_nginx}" == "true" ]; then
-echo "MySQL root password ${MYSQLROOTPASS}"
-echo "WordPress MySQL username ${WORDPRESSSQLUSER}"
-echo "WordPress MySQL password ${WORDPRESSSQLPASS}"
-echo "WordPress MySQL database ${WORDPRESSSQLDB}"
-echo "WordPress Admin username ${WPADMINUSER}"
-echo "WordPress Admin password ${WPADMINPASS}"
-echo "WordPress is available on ${WORDPRESSSITE}"
+echo "MySQL root password ${green}${MYSQLROOTPASS}"
+echo "WordPress MySQL username ${green}${WORDPRESSSQLUSER}"
+echo "WordPress MySQL password ${green}${WORDPRESSSQLPASS}"
+echo "WordPress MySQL database ${green}${WORDPRESSSQLDB}"
+echo "WordPress Admin username ${green}${WPADMINUSER}"
+echo "WordPress Admin password ${green}${WPADMINPASS}"
+echo "WordPress is available on ${green}${WORDPRESSSITE}"
+echo "If you chose SSL define your site as https in ${blue}General > Settings"
 fi
 if [ "${ins_monit}" == "true" ]; then
-echo "Monit is running on https://$SERVERIP:2812"
-echo "Monit username is ${MONITUSER}"
-echo "Monit password is ${MONITPASS}"
+echo "Monit is running on ${green}https://$SERVERIP:2812"
+echo "Monit username is ${green}${MONITUSER}"
+echo "Monit password is ${green}${MONITPASS}"
 fi
 if [ "${ins_webmin}" == "true" ]; then
 echo "Webmin is running on https://$SERVERIP:10000"

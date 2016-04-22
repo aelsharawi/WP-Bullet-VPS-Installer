@@ -807,7 +807,6 @@ whiptail --ok-button "Install" --title "WP Bullet VPS Installer for Ubuntu/Debia
 "Redis" "Install Redis Server" off \
 "Memcached" "Install Memcached" off \
 "Monit" "Monitor your programs" off \
-"wp-cli" "WordPress command line" off \
 "Automatic security updates" "Automatic security updates" off \
 "Create SWAP File" "Creates SWAP on your VPS" off 2>results
 while read choice
@@ -825,7 +824,6 @@ case $choice in
 	"Redis") 				ins_redis="true";;
 	"Memcached") 				ins_memcached="true";;
 	"Monit") 				ins_monit="true";;
-#	"wp-cli") 				ins_wp="true";;
 	"Automatic security updates") 		ins_unattended="true";;
 	"Create SWAP File") 			ins_swap="true";;
                 *)
@@ -844,7 +842,6 @@ if [[ "$ins_suhosin" == "true" ]]; 			then install_suhosin;			fi
 if [[ "$ins_redis" == "true" ]]; 			then install_redis;			fi
 if [[ "$ins_memcached" == "true" ]]; 			then install_memcached;			fi
 if [[ "$ins_monit" == "true" ]]; 			then install_monit;			fi
-#if [[ "$ins_wp" == "true" ]]; 				then install_wp;			fi
 if [[ "$ins_unattended" == "true" ]]; 			then install_unattended;		fi
 if [[ "$ins_swap" == "true" ]]; 			then install_swap;			fi
 

@@ -16,7 +16,7 @@ echo "WordPress MySQL password ${WORDPRESSSQLPASS}"
 echo "WordPress MySQL database ${WORDPRESSSQLDB}"
 echo "WordPress Admin username ${WPADMINUSER}"
 echo "WordPress Admin password ${WPADMINPASS}"
-echo "WrodPress is available on ${WORDPRESSSITE}"
+echo "WordPress is available on ${WORDPRESSSITE}"
 fi
 if [ "${ins_monit}" == "true" ]; then
 echo "Monit is running on https://$SERVERIP:2812"

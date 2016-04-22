@@ -368,7 +368,7 @@ sed -i "/define('DB_PASSWORD', 'password_here');/c\define('DB_PASSWORD', '${WORD
 chown -R www-data:www-data /var/www/${WORDPRESSSITE}/
 chmod 755 /var/www/${WORDPRESSSITE}/
 chmod 644 /var/www/${WORDPRESSSITE}/wp-config.php
-wp core install --url=${WORDPRESSSITE} --title=${WORDPRESSTITLE} --admin_user=${WPADMIN} --admin_password=${WPADMINPASS} --admin_email=${WPADMINEMAIL} --skip_email --allow-root
+wp core install --url=${WORDPRESSSITE} --title="${WORDPRESSTITLE}" --admin_user=${WPADMIN} --admin_password=${WPADMINPASS} --admin_email=${WPADMINEMAIL} --skip-email --allow-root
 
 }
 

@@ -19,22 +19,25 @@ reset=`tput sgr0`
 echo "${yellow}=== WP Bullet WordPress VPS Installer Complete ===${reset}"
 echo ""
 echo "${red}Copy the credentials somewhere safe in case you ever need them!${reset}"
+echo ""
 if [ "${ins_nginx_fastcgi}" == "true" ] || [ "${ins_nginx_fastcgissl}" == "true" ] || [ "${ins_nginx_varnish}" == "true" ] || [ "${ins_nginx_varnish_haproxy}" == "true" ] || [ "${ins_apache}" == "true" ] || [ "${ins_apache_nginx}" == "true" ]; then
-echo "MySQL root password ${green}${MYSQLROOTPASS}"
-echo "WordPress MySQL username ${green}${WORDPRESSSQLUSER}"
-echo "WordPress MySQL password ${green}${WORDPRESSSQLPASS}"
-echo "WordPress MySQL database ${green}${WORDPRESSSQLDB}"
-echo "WordPress Admin username ${green}${WPADMINUSER}"
-echo "WordPress Admin password ${green}${WPADMINPASS}"
-echo "WordPress is available on ${green}${WORDPRESSSITE}"
-echo "If you chose SSL define your site as https in ${blue}General > Settings"
+echo "MySQL root password ${green}${MYSQLROOTPASS}${reset}"
+echo "WordPress MySQL username ${green}${WORDPRESSSQLUSER}${reset}"
+echo "WordPress MySQL password ${green}${WORDPRESSSQLPASS}${reset}"
+echo "WordPress MySQL database ${green}${WORDPRESSSQLDB}${reset}"
+echo "WordPress Admin username ${green}${WPADMINUSER}${reset}"
+echo "WordPress Admin password ${green}${WPADMINPASS}${reset}"
+echo "WordPress is available on ${green}${WORDPRESSSITE}${reset}"
+echo "If you chose SSL define your site as https in ${blue}General > Settings${reset}"
 fi
 if [ "${ins_monit}" == "true" ]; then
-echo "Monit is running on ${green}https://$SERVERIP:2812"
-echo "Monit username is ${green}${MONITUSER}"
-echo "Monit password is ${green}${MONITPASS}"
+echo ""
+echo "Monit is running on ${green}https://$SERVERIP:2812${reset}"
+echo "Monit username is ${green}${MONITUSER}${reset}"
+echo "Monit password is ${green}${MONITPASS}${reset}"
 fi
 if [ "${ins_webmin}" == "true" ]; then
+echo ""
 echo "Webmin is running on https://$SERVERIP:10000"
 echo "Webmin username is system root or sudo user"
 fi

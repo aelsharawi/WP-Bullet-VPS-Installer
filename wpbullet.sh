@@ -57,8 +57,18 @@ exitstatus=$?; if [ $exitstatus = 1 ]; then exit 1; fi
 WORDPRESSSQLPASS=$(date +%s | sha256sum | base64 | head -c 32 ; echo)
 WORDPRESSSQLPASS=$(whiptail --inputbox "Choose the WordPress MySQL password" 8 78 $WORDPRESSSQLPASS --title "WP-Bullet.com" 3>&1 1>&2 2>&3)
 exitstatus=$?; if [ $exitstatus = 1 ]; then exit 1; fi
-WORDPRESSSITE=$(whiptail --inputbox "Choose the WordPress sitename (include domain extension without www.)" 8 78 "WP-Bullet.com" --title "wp-bullet.com" 3>&1 1>&2 2>&3)
+WORDPRESSSITE=$(whiptail --inputbox "Choose the WordPress site domain (include domain extension without www.)" 8 78 "WP-Bullet.com" --title "WP-Bullet.com" 3>&1 1>&2 2>&3)
 exitstatus=$?; if [ $exitstatus = 1 ]; then exit 1; fi
+WORDPRESSTITLE=$(whiptail --inputbox "Choose the WordPress site title" 8 78 "WP Bullet" --title "WP-Bullet.com" 3>&1 1>&2 2>&3)
+exitstatus=$?; if [ $exitstatus = 1 ]; then exit 1; fi
+WPADMINUSER=$(whiptail --inputbox "Choose the WordPress site admin username" 8 78 "wpadmin" --title "WP-Bullet.com" 3>&1 1>&2 2>&3)
+exitstatus=$?; if [ $exitstatus = 1 ]; then exit 1; fi
+WPADMINPASS=$(date +%s | sha256sum | base64 | head -c 32 ; echo)
+WPADMINPASS=$(whiptail --inputbox "Choose the WordPress site admin password" 8 78 $WPADMINPASS --title "WP-Bullet.com" 3>&1 1>&2 2>&3)
+exitstatus=$?; if [ $exitstatus = 1 ]; then exit 1; fi
+WPADMINEMAIL=$(whiptail --inputbox "Choose the WordPress site admin email" 8 78 "admin@wp-bullet.com" --title "WP-Bullet.com" 3>&1 1>&2 2>&3)
+exitstatus=$?; if [ $exitstatus = 1 ]; then exit 1; fi
+
 fi
 #fi
 #ASKED="true"
@@ -341,18 +351,15 @@ install_wordpress () {
 #--------------------------------------------------------------------------------------------------------------------------------
 # Install wordpress
 #--------------------------------------------------------------------------------------------------------------------------------
+wget -q https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar -O /usr/bin/wp
+chmod 755 /usr/bin/wp
 mkdir -p /var/www/${WORDPRESSSITE}
 cd /var/www/${WORDPRESSSITE}
-wget -q http://wordpress.org/latest.tar.gz
-tar --strip-components=1 -xf latest.tar.gz
-rm latest.tar.gz
+wp core download --path=/var/www/${WORDPRESSSITE} --allow-root
+#wget -q http://wordpress.org/latest.tar.gz
+#tar --strip-components=1 -xf latest.tar.gz
+#rm latest.tar.gz
 chown -R www-data:www-data /var/www/${WORDPRESSSITE}
-
-mysql -u root -p${MYSQLROOTPASS} -e "CREATE USER ${WORDPRESSSQLUSER}@localhost IDENTIFIED BY '${WORDPRESSSQLPASS}';"
-mysql -u root -p${MYSQLROOTPASS} -e "CREATE DATABASE ${WORDPRESSSQLDB};"
-mysql -u root -p${MYSQLROOTPASS} -e "GRANT ALL PRIVILEGES ON ${WORDPRESSSQLDB}.* TO ${WORDPRESSSQLUSER}@localhost IDENTIFIED BY '${WORDPRESSSQLPASS}';"
-mysql -u root -p${MYSQLROOTPASS} -e "FLUSH PRIVILEGES;"
-
 cp /var/www/${WORDPRESSSITE}/wp-config-sample.php wp-config.php
 #replace wp-config variables with the WordPress MySQL user and password
 sed -i "/define('DB_NAME', 'database_name_here');/c\define('DB_NAME', '${WORDPRESSSQLDB}');" /var/www/${WORDPRESSSITE}/wp-config.php
@@ -361,6 +368,8 @@ sed -i "/define('DB_PASSWORD', 'password_here');/c\define('DB_PASSWORD', '${WORD
 chown -R www-data:www-data /var/www/${WORDPRESSSITE}/
 chmod 755 /var/www/${WORDPRESSSITE}/
 chmod 644 /var/www/${WORDPRESSSITE}/wp-config.php
+wp core install --url=${WORDPRESSSITE} --title=${WORDPRESSTITLE} --admin_user=${WPADMIN} --admin_password=${WPADMINPASS} --admin_email=${WPADMINEMAIL} --skip_email --allow-root
+
 }
 
 install_mariadb () {
@@ -376,6 +385,11 @@ mv /etc/mysql/my.cnf /etc/mysql/my.cnf.bak
 MYCONF=$(find / -iname my.cnf | grep configs)
 cp $MYCONF /etc/mysql/my.cnf
 service mysql reload
+#create the wordpress sql database
+mysql -u root -p${MYSQLROOTPASS} -e "CREATE USER ${WORDPRESSSQLUSER}@localhost IDENTIFIED BY '${WORDPRESSSQLPASS}';"
+mysql -u root -p${MYSQLROOTPASS} -e "CREATE DATABASE ${WORDPRESSSQLDB};"
+mysql -u root -p${MYSQLROOTPASS} -e "GRANT ALL PRIVILEGES ON ${WORDPRESSSQLDB}.* TO ${WORDPRESSSQLUSER}@localhost IDENTIFIED BY '${WORDPRESSSQLPASS}';"
+mysql -u root -p${MYSQLROOTPASS} -e "FLUSH PRIVILEGES;"
 }
 
 install_varnish (){
@@ -716,17 +730,15 @@ fi
 service monit restart
 }
 
-install_wp () {
+#install_wp () {
 #--------------------------------------------------------------------------------------------------------------------------------
 # Install wp
 #--------------------------------------------------------------------------------------------------------------------------------
 #run commands inside WORDPRESSITE directory e.g. wp plugin install wordpress-seo --activate --allow-root
-wget -q https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar -O /usr/bin/wp
-chmod 755 /usr/bin/wp
-PHPCLI=$(find / -iname php.ini | grep cli)
-#grep suhosin.executor.include.whitelist
-echo 'suhosin.executor.include.whitelist="phar"' >> $PHPCLI
-}
+#wget -q https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar -O /usr/bin/wp
+#chmod 755 /usr/bin/wp
+#
+#}
 
 install_swap () {
 #--------------------------------------------------------------------------------------------------------------------------------
@@ -796,7 +808,7 @@ case $choice in
 	"Redis") 				ins_redis="true";;
 	"Memcached") 				ins_memcached="true";;
 	"Monit") 				ins_monit="true";;
-	"wp-cli") 				ins_wp="true";;
+#	"wp-cli") 				ins_wp="true";;
 	"Automatic security updates") 		ins_unattended="true";;
 	"Create SWAP File") 			ins_swap="true";;
                 *)
@@ -815,7 +827,7 @@ if [[ "$ins_suhosin" == "true" ]]; 			then install_suhosin;			fi
 if [[ "$ins_redis" == "true" ]]; 			then install_redis;			fi
 if [[ "$ins_memcached" == "true" ]]; 			then install_memcached;			fi
 if [[ "$ins_monit" == "true" ]]; 			then install_monit;			fi
-if [[ "$ins_wp" == "true" ]]; 				then install_wp;			fi
+#if [[ "$ins_wp" == "true" ]]; 				then install_wp;			fi
 if [[ "$ins_unattended" == "true" ]]; 			then install_unattended;		fi
 if [[ "$ins_swap" == "true" ]]; 			then install_swap;			fi
 

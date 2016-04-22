@@ -62,14 +62,14 @@ get_user_input () {
 #generate random passwords http://www.howtogeek.com/howto/30184/10-ways-to-generate-a-random-password-from-the-command-line/
 if (${ins_nginx_fastcgi} || ${ins_nginx_varnish} || ${ins_nginx_varnish_haproxy} == "true";) then
 MYSQLROOTPASS=$(date +%s | sha256sum | base64 | head -c 32 ; echo)
-MYSQLROOTPASS=$(whiptail --inputbox "Choose the MySQL root password" 8 78 $MYSQLROOTPASS --title "WP-Bullet.com" 3>&1 1>&2 2>&3)
+MYSQLROOTPASS=$(whiptail --inputbox "Choose the MySQL root password (use Ctr+U to clear random password)" 8 78 $MYSQLROOTPASS --title "WP-Bullet.com" 3>&1 1>&2 2>&3)
 exitstatus=$?; if [ $exitstatus = 1 ]; then exit 1; fi
 WORDPRESSSQLDB=$(whiptail --inputbox "Choose the WordPress MySQL database name" 8 78 "WordPressDB" --title "WP-Bullet.com" 3>&1 1>&2 2>&3)
 exitstatus=$?; if [ $exitstatus = 1 ]; then exit 1; fi
 WORDPRESSSQLUSER=$(whiptail --inputbox "Choose the WordPress MySQL user" 8 78 "WPMySQLuser" --title "WP-Bullet.com" 3>&1 1>&2 2>&3)
 exitstatus=$?; if [ $exitstatus = 1 ]; then exit 1; fi
 WORDPRESSSQLPASS=$(date +%s | sha256sum | base64 | head -c 32 ; echo)
-WORDPRESSSQLPASS=$(whiptail --inputbox "Choose the WordPress MySQL password" 8 78 $WORDPRESSSQLPASS --title "WP-Bullet.com" 3>&1 1>&2 2>&3)
+WORDPRESSSQLPASS=$(whiptail --inputbox "Choose the WordPress MySQL password (use Ctr+U to clear random password)" 8 78 $WORDPRESSSQLPASS --title "WP-Bullet.com" 3>&1 1>&2 2>&3)
 exitstatus=$?; if [ $exitstatus = 1 ]; then exit 1; fi
 WORDPRESSSITE=$(whiptail --inputbox "Choose the WordPress site domain (include domain extension without www.)" 8 78 "WP-Bullet.com" --title "WP-Bullet.com" 3>&1 1>&2 2>&3)
 exitstatus=$?; if [ $exitstatus = 1 ]; then exit 1; fi
@@ -78,7 +78,7 @@ exitstatus=$?; if [ $exitstatus = 1 ]; then exit 1; fi
 WPADMINUSER=$(whiptail --inputbox "Choose the WordPress site admin username" 8 78 "wpadmin" --title "WP-Bullet.com" 3>&1 1>&2 2>&3)
 exitstatus=$?; if [ $exitstatus = 1 ]; then exit 1; fi
 WPADMINPASS=$(date +%s | sha256sum | base64 | head -c 32 ; echo)
-WPADMINPASS=$(whiptail --inputbox "Choose the WordPress site admin password" 8 78 $WPADMINPASS --title "WP-Bullet.com" 3>&1 1>&2 2>&3)
+WPADMINPASS=$(whiptail --inputbox "Choose the WordPress site admin password (use Ctr+U to clear random password)" 8 78 $WPADMINPASS --title "WP-Bullet.com" 3>&1 1>&2 2>&3)
 exitstatus=$?; if [ $exitstatus = 1 ]; then exit 1; fi
 WPADMINEMAIL=$(whiptail --inputbox "Choose the WordPress site admin email" 8 78 "admin@wp-bullet.com" --title "WP-Bullet.com" 3>&1 1>&2 2>&3)
 exitstatus=$?; if [ $exitstatus = 1 ]; then exit 1; fi

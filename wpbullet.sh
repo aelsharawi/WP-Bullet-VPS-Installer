@@ -9,7 +9,7 @@ show_summary() {
 #--------------------------------------------------------------------------------------------------------------------------------
 # Show summary
 #--------------------------------------------------------------------------------------------------------------------------------
-if [ "${ins_nginx_fastcgi}" == "true" ] || [ "${ins_nginx_fastcgissl}" == "true" ] || [ "${ins_nginx_varnish}" == "true" ] || [ "${ins_nginx_varnish_haproxy}" == "true" ]; then
+if [ "${ins_nginx_fastcgi}" == "true" ] || [ "${ins_nginx_fastcgissl}" == "true" ] || [ "${ins_nginx_varnish}" == "true" ] || [ "${ins_nginx_varnish_haproxy}" == "true" ] || [ "${ins_apache}" == "true" ] || [ "${ins_apache_nginx}" == "true" ]; then
 echo "MySQL root password ${MYSQLROOTPASS}"
 echo "WordPress MySQL username ${WORDPRESSSQLUSER}"
 echo "WordPress MySQL password ${WORDPRESSSQLPASS}"

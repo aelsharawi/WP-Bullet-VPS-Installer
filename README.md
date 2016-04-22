@@ -9,6 +9,8 @@ To install
     cd WordPress-VPS-Installer
     sudo bash wpbullet.sh
     
-Use spacebar to choose items to install then tab to choose Install and press Enter
+Use Spacebar to choose items to install
+Use Tab to choose Install and press Enter to begin
+Random passwords are generated for you and a summary of credentials is displayed when the installer completes
 
 ![Screenshot](http://i.imgur.com/b38CScy.png)

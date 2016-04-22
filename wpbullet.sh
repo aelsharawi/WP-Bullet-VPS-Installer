@@ -22,7 +22,7 @@ echo ""
 echo "${red}Copy the credentials somewhere safe in case you ever need them!${reset}"
 echo ""
 if [ "${ins_nginx_fastcgi}" == "true" ] || [ "${ins_nginx_fastcgissl}" == "true" ] || [ "${ins_nginx_varnish}" == "true" ] || [ "${ins_nginx_varnish_haproxy}" == "true" ] || [ "${ins_apache}" == "true" ] || [ "${ins_apache_nginx}" == "true" ]; then
-echo -e "MySQL root password \t${green}${MYSQLROOTPASS}${reset}"
+echo -e "MySQL root password \t\t${green}${MYSQLROOTPASS}${reset}"
 echo -e "WordPress MySQL username \t${green}${WORDPRESSSQLUSER}${reset}"
 echo -e "WordPress MySQL password \t${green}${WORDPRESSSQLPASS}${reset}"
 echo -e "WordPress MySQL database \t${green}${WORDPRESSSQLDB}${reset}"

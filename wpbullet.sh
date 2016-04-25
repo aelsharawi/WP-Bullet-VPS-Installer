@@ -338,7 +338,7 @@ install_mariadb
 install_wordpress
 #ssl certificate
 mkdir -p /etc/apache2/ssl
-openssl req -new -x509 -days 365 -nodes -out /etc/apache2/ssl/wp-bullet.key -keyout /etc/apache2/ssl/wp-bullet.crt -subj "/C=/ST=/L=/O=Company Name/OU=Org/CN=${WORDPRESSSITE}"
+openssl req -new -x509 -days 365 -nodes -out /etc/apache2/ssl/wp-bullet.crt -keyout /etc/apache2/ssl/wp-bullet.key -subj "/C=/ST=/L=/O=Company Name/OU=Org/CN=${WORDPRESSSITE}"
 a2enmod rewrite
 a2enmod ssl
 a2dissite 000-default

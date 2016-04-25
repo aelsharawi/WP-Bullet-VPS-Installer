@@ -13,6 +13,8 @@ The provisioning tool for preconfiguring a VPS for WordPress on a Debian 8 x64 s
     
 ## Usage and Notes
 
+Only choose **one** of items 1-6 beginning with Apache or nginx
+
 Use Spacebar to choose items to install
 
 Use Tab to choose Install and press Enter to begin

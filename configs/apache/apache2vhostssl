@@ -3,11 +3,11 @@
         ServerAdmin webmaster@localhost
         ServerName example.com
         ServerAlias example.com
-        DocumentRoot /var/www/192.168.60.139
+        DocumentRoot /var/www/example.com
 
         SSLEngine on
-        SSLCertificateFile      /etc/apache2/ssl/wpbullet.crt
-        SSLCertificateKeyFile /etc/apache2/ssl/wpbullet.key
+        SSLCertificateFile      /etc/apache2/ssl/wp-bullet.crt
+        SSLCertificateKeyFile /etc/apache2/ssl/wp-bullet.key
         <Directory />
                 Options FollowSymLinks
                 AllowOverride All

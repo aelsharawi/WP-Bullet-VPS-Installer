@@ -12,7 +12,7 @@ show_summary() {
 #define colors for output
 red=`tput setaf 1`
 green=`tput setaf 2`
-yellow==`tput setaf 3`
+yellow=`tput setaf 3`
 blue=`tput setaf 4`
 reset=`tput sgr0`
 #echo "${red}red text ${green}green text${reset}"
@@ -86,9 +86,9 @@ exitstatus=$?; if [ $exitstatus = 1 ]; then exit 1; fi
 WPADMINUSER=$(whiptail --inputbox "Choose the WordPress site admin username" 8 78 "wpadmin" --title "WP-Bullet.com" 3>&1 1>&2 2>&3)
 exitstatus=$?; if [ $exitstatus = 1 ]; then exit 1; fi
 WPADMINPASS=$(date +%s | sha256sum | base64 | head -c 32 ; echo)
-WPADMINPASS=$(whiptail --inputbox "Choose the WordPress site admin password (use Ctr+U to clear random password)" 8 78 $WPADMINPASS --title "WP-Bullet.com" 3>&1 1>&2 2>&3)
+WPADMINPASS=$(whiptail --inputbox "Choose the WordPress admin password (use Ctr+U to clear below)" 8 78 $WPADMINPASS --title "WP-Bullet.com" 3>&1 1>&2 2>&3)
 exitstatus=$?; if [ $exitstatus = 1 ]; then exit 1; fi
-WPADMINEMAIL=$(whiptail --inputbox "Choose the WordPress site admin email" 8 78 "admin@wp-bullet.com" --title "WP-Bullet.com" 3>&1 1>&2 2>&3)
+WPADMINEMAIL=$(whiptail --inputbox "Choose the WordPress admin email" 8 78 "admin@wp-bullet.com" --title "WP-Bullet.com" 3>&1 1>&2 2>&3)
 exitstatus=$?; if [ $exitstatus = 1 ]; then exit 1; fi
 }
 

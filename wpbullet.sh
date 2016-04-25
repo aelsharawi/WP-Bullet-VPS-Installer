@@ -16,7 +16,7 @@ yellow==`tput setaf 3`
 blue=`tput setaf 4`
 reset=`tput sgr0`
 #echo "${red}red text ${green}green text${reset}"
-echo "\n\n"
+echo -e "\n\n"
 echo "${yellow}=== WP Bullet WordPress VPS Installer Complete ===${reset}"
 echo ""
 echo "${red}Copy the credentials somewhere safe in case you ever need them!${reset}"
@@ -29,6 +29,7 @@ echo -e "WordPress MySQL database \t${green}${WORDPRESSSQLDB}${reset}"
 echo -e "WordPress Admin username \t${green}${WPADMINUSER}${reset}"
 echo -e "WordPress Admin password \t${green}${WPADMINPASS}${reset}"
 echo "WordPress is available on ${green}${WORDPRESSSITE}${reset}"
+echo ""
 echo "If you chose SSL define your site as https in ${blue}General > Settings${reset}"
 fi
 if [ "${ins_monit}" == "true" ]; then
@@ -43,7 +44,7 @@ echo "Webmin is running on https://$SERVERIP:10000"
 echo "Webmin username is system root or sudo user"
 fi
 echo ""
-echo -e "WordPress VPS Installer by ${yellow}https://wp-bullet.com${reset}"
+echo "WordPress VPS Installer by ${yellow}https://wp-bullet.com${reset}"
 }
 
 clear_bash_history() {

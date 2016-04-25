@@ -7,8 +7,8 @@ The provisioning tool for preconfiguring a VPS for WordPress on a Debian 8 x64 s
 
     sudo apt-get install git -y
     cd ~
-    git clone https://github.com/wpbullet/WordPress-VPS-Installer
-    cd WordPress-VPS-Installer
+    git clone https://github.com/wpbullet/WP-Bullet-WordPress-VPS-Installer
+    cd WP-Bullet-WordPress-VPS-Installer
     sudo bash wpbullet.sh
     
 ## Usage and Notes

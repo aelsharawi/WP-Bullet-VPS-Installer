@@ -42,6 +42,8 @@ echo ""
 echo "Webmin is running on https://$SERVERIP:10000"
 echo "Webmin username is system root or sudo user"
 fi
+echo ""
+echo -e "WordPress VPS Installer by ${yellow}https://wp-bullet.com${reset}"
 }
 
 clear_bash_history() {
@@ -64,7 +66,8 @@ get_user_input () {
 #--------------------------------------------------------------------------------------------------------------------------------
 #if (("$ASKED" != "true")); then
 #generate random passwords http://www.howtogeek.com/howto/30184/10-ways-to-generate-a-random-password-from-the-command-line/
-if (${ins_nginx_fastcgi} || ${ins_nginx_varnish} || ${ins_nginx_varnish_haproxy} == "true";) then
+#if (${ins_nginx_fastcgi} || ${ins_nginx_varnish} || ${ins_nginx_varnish_haproxy} == "true";) then
+#if hash mysql 2>/dev/null; then
 MYSQLROOTPASS=$(date +%s | sha256sum | base64 | head -c 32 ; echo)
 MYSQLROOTPASS=$(whiptail --inputbox "Choose the MySQL root password (use Ctr+U to clear random password)" 8 78 $MYSQLROOTPASS --title "WP-Bullet.com" 3>&1 1>&2 2>&3)
 exitstatus=$?; if [ $exitstatus = 1 ]; then exit 1; fi
@@ -86,10 +89,6 @@ WPADMINPASS=$(whiptail --inputbox "Choose the WordPress site admin password (use
 exitstatus=$?; if [ $exitstatus = 1 ]; then exit 1; fi
 WPADMINEMAIL=$(whiptail --inputbox "Choose the WordPress site admin email" 8 78 "admin@wp-bullet.com" --title "WP-Bullet.com" 3>&1 1>&2 2>&3)
 exitstatus=$?; if [ $exitstatus = 1 ]; then exit 1; fi
-
-fi
-#fi
-#ASKED="true"
 }
 
 install_nginx_fastcgi () {

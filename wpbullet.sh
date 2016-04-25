@@ -245,7 +245,7 @@ ln -s /etc/nginx/sites-available/wordpress /etc/nginx/sites-enabled/wordpress
 sed -i s"/example.com/${WORDPRESSSITE}/g" /etc/nginx/sites-enabled/wordpress
 install_mariadb
 install_varnish
-cp configs/defaultssl.vcl /etc/varnish/default.vcl
+cp configs/default.vcl /etc/varnish/default.vcl
 sed -i s"/Web.Server.IP/${SERVERIP}/" /etc/varnish/default.vcl
 sed -i s"/DOMAIN/${WORDPRESSSITE}/" /etc/varnish/default.vcl
 install_haproxy
@@ -253,16 +253,16 @@ install_wordpress
 #WordPress SSL fix now use different vcl
 #echo "if (\$_SERVER['HTTP_X_FORWARDED_PROTO'] == 'https')
 #        \$_SERVER['HTTPS']='on';" >> /var/www/${WORDPRESSSITE}/wp-config.php
-rm /var/www/${WORDPRESSSITE}/wp-config.php
-WPCONFIG=$(find / -iname wp-config.php | grep configs)
-cp $WPCONFIG /var/www/${WORDPRESSSITE}/wp-config.php
-sed -i "/define('DB_NAME', 'database_name_here');/c\define('DB_NAME', '${WORDPRESSSQLDB}');" /var/www/${WORDPRESSSITE}/wp-config.php
-sed -i "/define('DB_USER', 'username_here');/c\define('DB_USER', '${WORDPRESSSQLUSER}');" /var/www/${WORDPRESSSITE}/wp-config.php
-sed -i "/define('DB_PASSWORD', 'password_here');/c\define('DB_PASSWORD', '${WORDPRESSSQLPASS}');" /var/www/${WORDPRESSSITE}/wp-config.php
-sed -i "s/sitename/${WORDPRESSSITE}/" /var/www/${WORDPRESSSITE}/wp-config.php
-chown -R www-data:www-data /var/www/${WORDPRESSSITE}/
-chmod 755 /var/www/${WORDPRESSSITE}/
-chmod 644 /var/www/${WORDPRESSSITE}/wp-config.php
+#rm /var/www/${WORDPRESSSITE}/wp-config.php
+#WPCONFIG=$(find / -iname wp-config.php | grep configs)
+#cp $WPCONFIG /var/www/${WORDPRESSSITE}/wp-config.php
+#sed -i "/define('DB_NAME', 'database_name_here');/c\define('DB_NAME', '${WORDPRESSSQLDB}');" /var/www/${WORDPRESSSITE}/wp-config.php
+#sed -i "/define('DB_USER', 'username_here');/c\define('DB_USER', '${WORDPRESSSQLUSER}');" /var/www/${WORDPRESSSITE}/wp-config.php
+#sed -i "/define('DB_PASSWORD', 'password_here');/c\define('DB_PASSWORD', '${WORDPRESSSQLPASS}');" /var/www/${WORDPRESSSITE}/wp-config.php
+#sed -i "s/sitename/${WORDPRESSSITE}/" /var/www/${WORDPRESSSITE}/wp-config.php
+#chown -R www-data:www-data /var/www/${WORDPRESSSITE}/
+#chmod 755 /var/www/${WORDPRESSSITE}/
+#chmod 644 /var/www/${WORDPRESSSITE}/wp-config.php
 #Fix CloudFlare IP
 cat > /etc/nginx/conf.d/cloudflare.conf<<EOF
 #CloudFlare
@@ -321,7 +321,7 @@ install_apache () {
 get_user_input
 install_dotdeb
 debconf-apt-progress -- apt-get update
-debconf-apt-progress -- apt-get install apache2 php5 libapache2-mod-php5 php5-mcrypt php5-mysql php5-gd php5-cgi php5-common php5-curl -y
+debconf-apt-progress -- apt-get install openssl apache2 php5 libapache2-mod-php5 php5-mcrypt php5-mysql php5-gd php5-cgi php5-common php5-curl -y
 mkdir -p /etc/apache2/conf.d
 cat > /etc/apache2/mods-enabled/dir.conf <<EOF
 <IfModule mod_dir.c>
@@ -331,12 +331,19 @@ EOF
 APACHEDIR=$(find / -iname apache | grep configs)
 cp $APACHEDIR/apache2.conf /etc/apache2/apache2.conf
 cp $APACHEDIR/apache2vhost /etc/apache2/sites-available/${WORDPRESSSITE}.conf
+cp $APACHEDIR/apache2vhostssl /etc/apache2/sites-available/${WORDPRESSSITE}ssl.conf
 sed -i s"/example.com/${WORDPRESSSITE}/g" /etc/apache2/sites-available/${WORDPRESSSITE}.conf
+sed -i s"/example.com/${WORDPRESSSITE}/g" /etc/apache2/sites-available/${WORDPRESSSITE}ssl.conf
 install_mariadb
 install_wordpress
+#ssl certificate
+mkdir -p /etc/apache2/ssl
+openssl req -new -x509 -days 365 -nodes -out /etc/apache2/ssl/wp-bullet.pem -keyout /etc/apache2/ssl/wp-bullet.pem -subj "/C=/ST=/L=/O=Company Name/OU=Org/CN=${WORDPRESSSITE}"
+a2enmod rewrite
+a2enmod ssl
 a2dissite 000-default
 a2ensite ${WORDPRESSSITE}
-a2enmod rewrite
+a2ensite ${WORDPRESSSITE}ssl
 service apache2 restart
 
 }

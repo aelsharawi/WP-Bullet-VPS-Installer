@@ -1,0 +1,38 @@
+<IfModule mod_ssl.c>
+<VirtualHost *:443>
+        ServerAdmin webmaster@localhost
+        ServerName example.com
+        ServerAlias example.com
+        DocumentRoot /var/www/192.168.60.139
+
+        SSLEngine on
+        SSLCertificateFile      /etc/apache2/ssl/wpbullet.crt
+        SSLCertificateKeyFile /etc/apache2/ssl/wpbullet.key
+        <Directory />
+                Options FollowSymLinks
+                AllowOverride All
+        </Directory>
+        <Directory /var/www/example.com/ >
+                Options Indexes FollowSymLinks MultiViews
+                AllowOverride All
+                Order allow,deny
+                allow from all
+        </Directory>
+
+        ScriptAlias /cgi-bin/ /usr/lib/cgi-bin/
+        <Directory "/usr/lib/cgi-bin">
+                AllowOverride All
+                Options +ExecCGI -MultiViews +SymLinksIfOwnerMatch
+                Order allow,deny
+                Allow from all
+        </Directory>
+
+        ErrorLog ${APACHE_LOG_DIR}/error.log
+
+        # Possible values include: debug, info, notice, warn, error, crit,
+        # alert, emerg.
+        LogLevel warn
+        LogFormat "%h %l %u %t \"%r\" %>s %b" combined
+        CustomLog ${APACHE_LOG_DIR}/access.log combined
+</VirtualHost>
+</IfModule>

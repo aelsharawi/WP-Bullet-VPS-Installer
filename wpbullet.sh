@@ -369,6 +369,7 @@ install_wordpress () {
 #--------------------------------------------------------------------------------------------------------------------------------
 # Install wordpress
 #--------------------------------------------------------------------------------------------------------------------------------
+debconf-apt-progress -- apt-get install pngtools optipng gifsicle libjpeg-progs -y
 wget -q https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar -O /usr/bin/wp
 chmod 755 /usr/bin/wp
 mkdir -p /var/www/${WORDPRESSSITE}

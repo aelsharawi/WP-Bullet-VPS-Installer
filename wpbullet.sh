@@ -588,12 +588,13 @@ phpize > /dev/null
 ./configure > /dev/null
 make > /dev/null
 make install
-PHPINI=($(find / -iname php.ini))
+PHPINI=($(find / -iname conf.d | grep php))
 for ini in "${PHPINI[@]}"
 do
-  echo "extension=redis.so" >> "${ini}"
+  echo "extension=redis.so" > "${ini}/30-redis.ini"
 done
 service php5-fpm restart
+service apache2 restart
 }
 
 install_memcached () {
@@ -601,7 +602,7 @@ install_memcached () {
 # Install memcached
 #--------------------------------------------------------------------------------------------------------------------------------
 debconf-apt-progress -- apt-get update
-debconf-apt-progress -- apt-get install libmemcached* memcached libanyevent-perl libyaml-perl libterm-readkey-perl libevent-dev php5-dev php5-json php5-igbinary pkg-config build-essential -y
+debconf-apt-progress -- apt-get install libmemcached* memcached libanyevent-perl libyaml-perl libterm-readkey-perl libevent-dev php5-dev php5-json php5-igbinary php5-msgpack pkg-config build-essential -y
 MEMCACHELATEST=$(wget -q http://www.memcached.org -O - | grep tar.gz | awk -F "[\"]" '{print $2}')
 cd /tmp
 wget -q $MEMCACHELATEST -O memcached.tar.gz
@@ -664,15 +665,16 @@ git clone https://github.com/php-memcached-dev/php-memcached
 cd php-memcached
 phpize
 #--disable-memcached-sasl --enable-memcached-json --enable-memcached-igbinary
-./configure --prefix=/usr
+./configure --prefix=/usr --enable-memcached-igbinary --enable-memcached-json --enable-memcached-msgpack
 make
 make install
-PHPINI=($(find / -iname php.ini))
+PHPINI=($(find / -iname conf.d | grep php))
 for ini in "${PHPINI[@]}"
 do
-  echo "extension=memcached.so" >> "${ini}"
+  echo "extension=memcached.so" >> "${ini}/30-memcached.ini"
 done
 service php5-fpm restart
+service memcached restart
 }
 
 install_monit () {

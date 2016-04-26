@@ -663,8 +663,8 @@ cd /tmp
 git clone https://github.com/php-memcached-dev/php-memcached
 cd php-memcached
 phpize
-#--disable-memcached-sasl --enable-memcached-json
-./configure --prefix=/usr --enable-memcached-igbinary
+#--disable-memcached-sasl --enable-memcached-json --enable-memcached-igbinary
+./configure --prefix=/usr
 make
 make install
 PHPINI=($(find / -iname php.ini))

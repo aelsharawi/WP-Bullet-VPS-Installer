@@ -20,4 +20,5 @@ The provisioning tool for preconfiguring a VPS for WordPress on a Debian 8 x64 s
 * You can use an IP instead of a domain name for local environments
 * A summary of credentials is displayed when the installer completes
 * SSL configuration use self-signed certificates to use Full SSL with CloudFlare
+
 ![Screenshot](http://i.imgur.com/b38CScy.png)

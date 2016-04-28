@@ -334,8 +334,8 @@ cp $APACHEDIR/apache2vhost /etc/apache2/sites-available/${WORDPRESSSITE}.conf
 cp $APACHEDIR/apache2vhostssl /etc/apache2/sites-available/${WORDPRESSSITE}ssl.conf
 sed -i s"/example.com/${WORDPRESSSITE}/g" /etc/apache2/sites-available/${WORDPRESSSITE}.conf
 sed -i s"/example.com/${WORDPRESSSITE}/g" /etc/apache2/sites-available/${WORDPRESSSITE}ssl.conf
-install_mariadb
-install_wordpress
+#install_mariadb
+#install_wordpress
 #ssl certificate
 mkdir -p /etc/apache2/ssl
 openssl req -new -x509 -days 365 -nodes -out /etc/apache2/ssl/wp-bullet.crt -keyout /etc/apache2/ssl/wp-bullet.key -subj "/C=/ST=/L=/O=Company Name/OU=Org/CN=${WORDPRESSSITE}"
@@ -345,7 +345,9 @@ a2dissite 000-default
 a2ensite ${WORDPRESSSITE}
 a2ensite ${WORDPRESSSITE}ssl
 service apache2 restart
-
+install_mariadb
+install_wordpress
+service apache2 restart
 }
 
 install_dotdeb () {
@@ -392,7 +394,7 @@ sed -i "/define('DB_NAME', 'database_name_here');/c\define('DB_NAME', '${WORDPRE
 sed -i "/define('DB_USER', 'username_here');/c\define('DB_USER', '${WORDPRESSSQLUSER}');" /var/www/${WORDPRESSSITE}/wp-config.php
 sed -i "/define('DB_PASSWORD', 'password_here');/c\define('DB_PASSWORD', '${WORDPRESSSQLPASS}');" /var/www/${WORDPRESSSITE}/wp-config.php
 wp core install --url=${WORDPRESSSITE} --title="${WORDPRESSTITLE}" --admin_user=${WPADMINUSER} --admin_password=${WPADMINPASS} --admin_email=${WPADMINEMAIL} --skip-email --allow-root
-wp option update permalink_structure '/%postname%'
+wp option update permalink_structure '/%postname%' --allow-root
 chown -R www-data:www-data /var/www/${WORDPRESSSITE}/
 chmod 755 /var/www/${WORDPRESSSITE}/
 chmod 644 /var/www/${WORDPRESSSITE}/wp-config.php

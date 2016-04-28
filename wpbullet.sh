@@ -392,6 +392,7 @@ sed -i "/define('DB_NAME', 'database_name_here');/c\define('DB_NAME', '${WORDPRE
 sed -i "/define('DB_USER', 'username_here');/c\define('DB_USER', '${WORDPRESSSQLUSER}');" /var/www/${WORDPRESSSITE}/wp-config.php
 sed -i "/define('DB_PASSWORD', 'password_here');/c\define('DB_PASSWORD', '${WORDPRESSSQLPASS}');" /var/www/${WORDPRESSSITE}/wp-config.php
 wp core install --url=${WORDPRESSSITE} --title="${WORDPRESSTITLE}" --admin_user=${WPADMINUSER} --admin_password=${WPADMINPASS} --admin_email=${WPADMINEMAIL} --skip-email --allow-root
+wp option update permalink_structure '/%postname%'
 chown -R www-data:www-data /var/www/${WORDPRESSSITE}/
 chmod 755 /var/www/${WORDPRESSSITE}/
 chmod 644 /var/www/${WORDPRESSSITE}/wp-config.php

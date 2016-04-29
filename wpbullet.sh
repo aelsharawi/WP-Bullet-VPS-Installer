@@ -640,9 +640,9 @@ logfile /var/log/memcached.log
 # it's listening on a firewalled interface.
 -l 127.0.0.1
 # Set unix socket which we put in the folder /var/run/memcached and made memcache user the owner
--s /var/run/memcached/memcached.sock
+#-s /var/run/memcached/memcached.sock
 # set permissions for the memcached socket
--a 755
+#-a 755
 # Limit the number of simultaneous incoming connections. The daemon default is 1024
 # -c 1024
 # Lock down all paged memory. Consult with the README and homepage before you do this

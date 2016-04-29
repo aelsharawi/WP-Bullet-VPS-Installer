@@ -5,6 +5,13 @@ if [ $(id -u) != "0" ]; then
     exit 1
 fi
 
+if dpkg-query -W wget debconf-utils whiptail build-essential apt-transport-https; then
+return
+else
+apt-get install wget debconf-utils whiptail build-essential apt-transport-https -q -y
+#debconf-apt-progress -- apt-get upgrade -y
+fi
+
 show_summary() {
 #--------------------------------------------------------------------------------------------------------------------------------
 # Show summary

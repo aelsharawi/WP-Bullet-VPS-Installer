@@ -639,11 +639,18 @@ logfile /var/log/memcached.log
 # This parameter is one of the only security measures that memcached has, so make sure
 # it's listening on a firewalled interface.
 -l 127.0.0.1
+# Set unix socket which we put in the folder /var/run/memcached and made memcache user the owner
+-s /var/run/memcached/memcached.sock
+# set permissions for the memcached socket
+-a 755
 # Limit the number of simultaneous incoming connections. The daemon default is 1024
 # -c 1024
 # Lock down all paged memory. Consult with the README and homepage before you do this
 # -k
 EOF
+# Make memcached socket folder
+mkdir -p /var/run/memcached
+chown -R memcache:memcache /var/run/memcached
 cp scripts/memcached-init /etc/init.d/memcached
 cat > /etc/default/memcached<<EOF
 # Set this to no to disable memcached.

@@ -560,6 +560,9 @@ cd ..
 rm -Rf redis*
 #add redis user
 adduser --system --group --disabled-login redis --home /usr/bin/redis-server --shell /bin/nologin --quiet
+#create unix socket path
+mkdir -p /var/run/redis
+chown -R redis:redis /var/run/redis
 mv /etc/redis/redis.conf /etc/redis/redis.conf.bak
 #create redis configuration
 cat > /etc/redis/redis.conf<<EOF

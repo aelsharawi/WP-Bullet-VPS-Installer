@@ -5,6 +5,7 @@ if [ $(id -u) != "0" ]; then
     exit 1
 fi
 
+#check some essential software is installed
 if dpkg-query -W wget debconf-utils whiptail build-essential apt-transport-https; then
 return
 else

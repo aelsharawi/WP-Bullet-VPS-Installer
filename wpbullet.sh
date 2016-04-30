@@ -563,11 +563,17 @@ adduser --system --group --disabled-login redis --home /usr/bin/redis-server --s
 mv /etc/redis/redis.conf /etc/redis/redis.conf.bak
 #create redis configuration
 cat > /etc/redis/redis.conf<<EOF
+# create a unix domain socket to listen on
+#unixsocket /var/run/redis/redis.sock
+# set permissions for the socket
+#unixsocketperm 755
 bind 127.0.0.1
 daemonize yes
 stop-writes-on-bgsave-error no
 rdbcompression yes
+# maximum memory allowed for redis
 maxmemory 50M
+# how redis will evice old objects - least recently used
 maxmemory-policy allkeys-lru
 EOF
 cat > /etc/systemd/system/redis-server.service<<EOF
@@ -636,7 +642,7 @@ logfile /var/log/memcached.log
 # Start with a cap of 64 megs of memory. It's reasonable, and the daemon default
 # Note that the daemon will grow to this size, but does not start out holding this much
 # memory
--m 64
+-m 50
 # Default connection port is 11211
 -p 11211
 # Run the daemon as root. The start-memcached will default to running as root if no

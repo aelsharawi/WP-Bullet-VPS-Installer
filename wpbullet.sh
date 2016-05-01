@@ -601,7 +601,7 @@ service redis-server start
 #build the php extension
 cd /tmp
 debconf-apt-progress -- git -y
-git clone https://github.com/phpredis/phpredis
+git clone https://github.com/phpredis/phpredis -b php7
 cd phpredis
 echo "Building Redis pecl extension"
 phpize > /dev/null
@@ -688,7 +688,7 @@ service memcached start
 #make install
 #build the actual pecl extension
 cd /tmp
-git clone https://github.com/php-memcached-dev/php-memcached
+git clone https://github.com/php-memcached-dev/php-memcached -b php7
 cd php-memcached
 phpize
 #--disable-memcached-sasl --enable-memcached-json --enable-memcached-igbinary

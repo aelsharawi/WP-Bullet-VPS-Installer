@@ -380,7 +380,7 @@ NGINXCONFIG=$(find / -iname configs)
 cp $NGINXCONFIG/nginx/nginx.conf /etc/nginx/nginx.conf
 unlink /etc/nginx/sites-enabled/default
 debconf-apt-progress -- apt-get install curl php7.0-curl php7.0-mysql php7.0-cli php7.0-fpm php7.0-gd -y
-cp $NGINXCONFIG/www.conf /etc/php7.0/fpm/pool.d/www.conf
+cp $NGINXCONFIG/www.conf /etc/php/7.0/fpm/pool.d/www.conf
 }
 
 install_wordpress () {

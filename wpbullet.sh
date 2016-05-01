@@ -357,6 +357,8 @@ a2ensite ${WORDPRESSSITE}ssl
 service apache2 restart
 install_mariadb
 install_wordpress
+touch /var/www/${WORDPRESSSITE}/.htaccess
+chown -R www-data:www-data /var/www
 }
 
 install_dotdeb () {

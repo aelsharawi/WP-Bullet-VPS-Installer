@@ -35,7 +35,7 @@ server {
         location ~ (wp-login|xmlrpc)\.php {
         limit_req   zone=one  burst=1 nodelay;
         include fastcgi_params;
-        fastcgi_pass unix:/var/run/php5-fpm.sock;
+        fastcgi_pass unix:/run/php/php7.0-fpm.sock;
         fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
         limit_req_status 444;
         }

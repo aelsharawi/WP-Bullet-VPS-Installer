@@ -144,7 +144,7 @@ set_real_ip_from   2405:8100::/32;
 real_ip_header     CF-Connecting-IP;
 EOF
 service nginx restart
-service php5-fpm restart
+service php7.0-fpm restart
 
 }
 
@@ -191,7 +191,7 @@ set_real_ip_from   2405:8100::/32;
 real_ip_header     CF-Connecting-IP;
 EOF
 service nginx restart
-service php5-fpm restart
+service php7.0-fpm restart
 
 }
 
@@ -237,7 +237,7 @@ set_real_ip_from   127.0.0.1/32;
 real_ip_header     X-Actual-IP;
 EOF
 service nginx restart
-service php5-fpm restart
+service php7.0-fpm restart
 service varnish restart
 }
 
@@ -298,7 +298,7 @@ set_real_ip_from   127.0.0.1/32;
 real_ip_header     X-Actual-IP;
 EOF
 service nginx restart
-service php5-fpm restart
+service php7.0-fpm restart
 service varnish restart
 service haproxy restart
 }
@@ -329,7 +329,7 @@ install_apache () {
 get_user_input
 install_dotdeb
 debconf-apt-progress -- apt-get update
-debconf-apt-progress -- apt-get install openssl apache2 php5 libapache2-mod-php5 php5-mcrypt php5-mysql php5-gd php5-cgi php5-common php5-curl -y
+debconf-apt-progress -- apt-get install openssl apache2 php7.0 libapache2-mod-php7.0 php7.0-mcrypt php7.0-mysql php7.0-gd php7.0-cgi php7.0-common php7.0-curl -y
 mkdir -p /etc/apache2/conf.d
 cat > /etc/apache2/mods-enabled/dir.conf <<EOF
 <IfModule mod_dir.c>
@@ -378,8 +378,8 @@ debconf-apt-progress -- apt-get install nginx nginx-extras -y
 NGINXCONFIG=$(find / -iname configs)
 cp $NGINXCONFIG/nginx/nginx.conf /etc/nginx/nginx.conf
 unlink /etc/nginx/sites-enabled/default
-debconf-apt-progress -- apt-get install curl php5-curl php5-mysql php5-cli php5-fpm php5-gd -y
-cp $NGINXCONFIG/www.conf /etc/php5/fpm/pool.d/www.conf
+debconf-apt-progress -- apt-get install curl php7.0-curl php7.0-mysql php7.0-cli php7.0-fpm php7.0-gd -y
+cp $NGINXCONFIG/www.conf /etc/php7.0/fpm/pool.d/www.conf
 }
 
 install_wordpress () {
@@ -523,7 +523,7 @@ install_suhosin () {
 # Install suhosin
 #--------------------------------------------------------------------------------------------------------------------------------
 debconf-apt-progress -- apt-get update
-debconf-apt-progress -- apt-get install php5-dev git build-essential -y
+debconf-apt-progress -- apt-get install php7.0-dev git build-essential -y
 cd /tmp
 SUHOSINLATEST=$(wget -q -O - https://github.com/stefanesser/suhosin/releases/ | grep tar.gz | awk -F [\"] 'NR==1 {print $2}')
 wget -q https://github.com$SUHOSINLATEST -O suhosin.tar.gz
@@ -538,7 +538,7 @@ for ini in "${PHPINI[@]}"
 do
   echo "extension=suhosin.so" >> "${ini}"
 done
-service php5-fpm restart
+service php7.0-fpm restart
 }
 
 install_redis () {
@@ -546,7 +546,7 @@ install_redis () {
 # Install redis
 #--------------------------------------------------------------------------------------------------------------------------------
 debconf-apt-progress -- apt-get update
-debconf-apt-progress -- apt-get install php5-dev build-essential -y
+debconf-apt-progress -- apt-get install php7.0-dev build-essential -y
 cd /tmp
 #build redis
 wget http://download.redis.io/redis-stable.tar.gz
@@ -613,7 +613,7 @@ for ini in "${PHPINI[@]}"
 do
   echo "extension=redis.so" > "${ini}/30-redis.ini"
 done
-service php5-fpm restart
+service php7.0-fpm restart
 service apache2 restart
 }
 
@@ -622,7 +622,7 @@ install_memcached () {
 # Install memcached
 #--------------------------------------------------------------------------------------------------------------------------------
 debconf-apt-progress -- apt-get update
-debconf-apt-progress -- apt-get install libmemcached* memcached libanyevent-perl libyaml-perl libterm-readkey-perl libevent-dev php5-dev php5-json php5-igbinary php5-msgpack pkg-config build-essential -y
+debconf-apt-progress -- apt-get install libmemcached* memcached libanyevent-perl libyaml-perl libterm-readkey-perl libevent-dev php7.0-dev php7.0-json php7.0-igbinary php7.0-msgpack pkg-config build-essential -y
 MEMCACHELATEST=$(wget -q http://www.memcached.org -O - | grep tar.gz | awk -F "[\"]" '{print $2}')
 cd /tmp
 wget -q $MEMCACHELATEST -O memcached.tar.gz
@@ -678,7 +678,7 @@ update-rc.d memcached defaults
 service memcached start
 #build memcached pecl extension
 #build libmemcached first
-#debconf-apt-progress -- apt-get install libsasl2-dev git php5-dev pkg-config build-essential -y
+#debconf-apt-progress -- apt-get install libsasl2-dev git php7.0-dev pkg-config build-essential -y
 #cd /tmp
 #wget -q https://launchpad.net/libmemcached/1.0/1.0.18/+download/libmemcached-1.0.18.tar.gz
 #tar -xf libmemcached-1.0.18.tar.gz
@@ -700,7 +700,7 @@ for ini in "${PHPINI[@]}"
 do
   echo "extension=memcached.so" >> "${ini}/30-memcached.ini"
 done
-service php5-fpm restart
+service php7.0-fpm restart
 service memcached restart
 }
 
@@ -761,7 +761,7 @@ set daemon 60 #check services every 60 seconds
 EOF
 chmod 0700 /etc/monit/monitrc
 #create array to iterate over
-MONITCHECK=(nginx php5-fpm mysqld varnishd haproxy redis-server memcached lfd sshd)
+MONITCHECK=(nginx php7.0-fpm mysqld varnishd haproxy redis-server memcached lfd sshd)
 #loop through array and copy monit configuration if binary exists
 for monit in "${MONITCHECK[@]}"
 do

@@ -17,6 +17,7 @@ The provisioning tool for preconfiguring a VPS for WordPress on a Debian 8 x64 s
 * Use Spacebar to choose items to install
 * Use Tab to choose Install and press Enter to begin
 * Random passwords are generated for you
+* Uses [wp-cli](https://github.com/wp-cli/wp-cli)
 * You can use an IP instead of a domain name for local environments
 * A summary of credentials is displayed when the installer completes
 * SSL configuration use self-signed certificates to use Full SSL with CloudFlare

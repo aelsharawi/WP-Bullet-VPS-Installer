@@ -58,9 +58,8 @@ define('NONCE_SALT',       'put your unique phrase here');
 define('WP_HOME','https://sitename');
 define('WP_SITEURL','https://sitename');
 
-if ($_SERVER['HTTP_X_FORWARDED_PROTO'] == 'https')
-    $_SERVER['HTTPS']='on';
-
+if ( isset( $_SERVER['HTTP_X_FORWARDED_PROTO'] ) && $_SERVER['HTTP_X_FORWARDED_PROTO'] == 'https')
+        $_SERVER['HTTPS']='on';
 
 /**#@-*/
 

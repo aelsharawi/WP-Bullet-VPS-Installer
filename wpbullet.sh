@@ -8,10 +8,10 @@ fi
 #check some essential software is installed
 echo "Doing intial update, please wait"
 apt-get update -qq
-if dpkg-query -W wget debconf-utils whiptail build-essential apt-transport-https; then
+if dpkg-query -W wget debconf-utils whiptail; then
 return
 else
-apt-get install wget debconf-utils whiptail build-essential apt-transport-https -q -y
+apt-get install wget debconf-utils whiptail -qq -y
 #debconf-apt-progress -- apt-get upgrade -y
 fi
 

@@ -354,9 +354,10 @@ a2enmod ssl
 a2dissite 000-default
 a2ensite ${WORDPRESSSITE}
 a2ensite ${WORDPRESSSITE}ssl
+service apache2 restart
 install_mariadb
 install_wordpress
-service apache2 restart
+
 }
 
 install_dotdeb () {

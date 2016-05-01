@@ -319,8 +319,8 @@ cp $NGINXCONFIG /etc/nginx/sites-available/reverseproxy
 ln -s /etc/nginx/sites-available/reverseproxy /etc/nginx/sites-enabled/reverseproxy
 sed -i s"/example.com/${WORDPRESSSITE}/g" /etc/nginx/sites-enabled/reverseproxy
 sed -i s"/Web.Server.IP/${SERVERIP}/g" /etc/nginx/sites-enabled/reverseproxy
-service apache2 restart
 service nginx restart
+service apache2 restart
 }
 
 install_apache () {
@@ -776,12 +776,16 @@ cp $MONITCONFIGSFOLDER/webmin /etc/monit/conf.d/webmin
 fi
 #make sure nginx is listening on the right port
 if hash nginx  2>/dev/null; then
-if (grep "listen 8080;" /etc/nginx/sites-enabled/wordpress >/dev/null); then
+SITELIST=($(ls -lh /etc/nginx/sites-enabled/ | awk '{print $9}'))
+for SITE in ${SITELIST[@]};
+do
+if (grep "listen 8080;" /etc/nginx/sites-enabled/$SITE >/dev/null); then
 sed -i 's/8080/80/' /etc/monit/conf.d/nginx
 fi
-if (grep "listen 443;" /etc/nginx/sites-enabled/wordpress >/dev/null); then
+if (grep "listen 443;" /etc/nginx/sites-enabled/$SITE >/dev/null); then
 sed -i 's/8080/443/' /etc/monit/conf.d/nginx
 fi
+done
 fi
 service monit restart
 }

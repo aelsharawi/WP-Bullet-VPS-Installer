@@ -6,7 +6,7 @@ if [ $(id -u) != "0" ]; then
 fi
 
 #check some essential software is installed
-apt-get update -q
+apt-get update -qq
 if dpkg-query -W wget debconf-utils whiptail build-essential apt-transport-https; then
 return
 else

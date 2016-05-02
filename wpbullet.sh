@@ -488,7 +488,7 @@ PHPINI=($(find / -iname php.ini))
 for ini in "${PHPINI[@]}"
 do
   echo "extension=suhosin.so" >> "${ini}"
-  echo "suhosin.executor.include.whitelist="phar" >> "${ini}"
+  echo 'suhosin.executor.include.whitelist="phar"' >> "${ini}"
 done
 servercheck
 }

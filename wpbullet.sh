@@ -752,7 +752,7 @@ do
   if hash "${server}" 2>/dev/null; then
         service ${server} restart
   fi
-do
+done
 }
 
 install_swap () {

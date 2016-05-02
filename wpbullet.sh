@@ -487,7 +487,7 @@ make install > /dev/null
 PHPINI=($(find / -iname php.ini))
 for ini in "${PHPINI[@]}"
 do
-  echo "extension=suhosin.so" >> "${ini}"
+  echo "extension=suhosin7.so" >> "${ini}"
   echo 'suhosin.executor.include.whitelist="phar"' >> "${ini}"
 done
 servercheck

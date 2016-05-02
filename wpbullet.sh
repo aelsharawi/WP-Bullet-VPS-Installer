@@ -9,8 +9,9 @@ fi
 echo "Doing intial update, please wait"
 apt-get update -qq
 if dpkg-query -W wget debconf-utils whiptail; then
-return
+echo "Necessary Programs Installed :)"
 else
+echo "Installing necessary programs"
 apt-get install wget debconf-utils whiptail -qq -y
 #debconf-apt-progress -- apt-get upgrade -y
 fi
@@ -540,7 +541,7 @@ for ini in "${PHPINI[@]}"
 do
   echo "extension=suhosin.so" >> "${ini}"
 done
-service php7.0-fpm restart
+servercheck
 }
 
 install_redis () {
@@ -615,8 +616,7 @@ for ini in "${PHPINI[@]}"
 do
   echo "extension=redis.so" > "${ini}/30-redis.ini"
 done
-service php7.0-fpm restart
-service apache2 restart
+servercheck
 }
 
 install_memcached () {
@@ -702,7 +702,7 @@ for ini in "${PHPINI[@]}"
 do
   echo "extension=memcached.so" >> "${ini}/30-memcached.ini"
 done
-service php7.0-fpm restart
+servercheck
 service memcached restart
 }
 
@@ -791,15 +791,19 @@ fi
 service monit restart
 }
 
-#install_wp () {
+servercheck () {
 #--------------------------------------------------------------------------------------------------------------------------------
-# Install wp
+# check and restart server daemons
 #--------------------------------------------------------------------------------------------------------------------------------
-#run commands inside WORDPRESSITE directory e.g. wp plugin install wordpress-seo --activate --allow-root
-#wget -q https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar -O /usr/bin/wp
-#chmod 755 /usr/bin/wp
-#
-#}
+SERVERCHECK=(php7.0-fpm apache2)
+#loop through array and copy monit configuration if binary exists
+for server in "${SERVERCHECK[@]}"
+do
+  if hash "${server}" 2>/dev/null; then
+        service ${server} restart
+  fi
+do
+}
 
 install_swap () {
 #--------------------------------------------------------------------------------------------------------------------------------

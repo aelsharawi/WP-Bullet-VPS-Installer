@@ -478,9 +478,7 @@ install_suhosin () {
 debconf-apt-progress -- apt-get update
 debconf-apt-progress -- apt-get install php7.0-dev git build-essential -y
 cd /tmp
-SUHOSINLATEST=$(wget -q -O - https://github.com/stefanesser/suhosin/releases/ | grep tar.gz | awk -F [\"] 'NR==1 {print $2}')
-wget -q https://github.com$SUHOSINLATEST -O suhosin.tar.gz
-tar -xf suhosin.tar.gz
+git clone https://github.com/sektioneins/suhosin7
 cd suhosin*
 phpize > /dev/null
 ./configure > /dev/null
@@ -801,7 +799,7 @@ whiptail --ok-button "Install" --title "WP Bullet VPS Installer for Ubuntu/Debia
 "Apache with nginx cache" "Apache with nginx reverse proxy cache" off \
 "Webmin" "Easy GUI VPS administration" off \
 "CSF Firewall" "Comprehensive Firewall" off \
-#"Suhosin" "Enable PHP Security" off \
+"Suhosin" "Enable PHP Security" off \
 "Redis" "Install Redis Server" off \
 "Memcached" "Install Memcached" off \
 "Monit" "Monitor your programs" off \
@@ -818,7 +816,7 @@ case $choice in
 	"Apache with nginx cache") 		ins_apache_nginx="true";;
 	"Webmin") 				ins_webmin="true";;
 	"CSF Firewall") 			ins_csf="true";;
-#	"Suhosin") 				ins_suhosin="true";;
+	"Suhosin") 				ins_suhosin="true";;
 	"Redis") 				ins_redis="true";;
 	"Memcached") 				ins_memcached="true";;
 	"Monit") 				ins_monit="true";;

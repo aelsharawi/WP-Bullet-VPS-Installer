@@ -9,7 +9,7 @@ fi
 echo "Doing intial update, please wait"
 apt-get update -qq
 if dpkg-query -W wget debconf-utils whiptail; then
-return
+echo "Necessary programs installed :)"
 else
 apt-get install wget debconf-utils whiptail -qq -y
 #debconf-apt-progress -- apt-get upgrade -y
@@ -359,6 +359,7 @@ install_mariadb
 install_wordpress
 touch /var/www/${WORDPRESSSITE}/.htaccess
 chown -R www-data:www-data /var/www
+
 }
 
 install_dotdeb () {
@@ -541,7 +542,7 @@ for ini in "${PHPINI[@]}"
 do
   echo "extension=suhosin.so" >> "${ini}"
 done
-service php5-fpm restart
+servercheck
 }
 
 install_redis () {
@@ -616,8 +617,7 @@ for ini in "${PHPINI[@]}"
 do
   echo "extension=redis.so" > "${ini}/30-redis.ini"
 done
-service php5-fpm restart
-service apache2 restart
+servercheck
 }
 
 install_memcached () {
@@ -703,7 +703,7 @@ for ini in "${PHPINI[@]}"
 do
   echo "extension=memcached.so" >> "${ini}/30-memcached.ini"
 done
-service php5-fpm restart
+servercheck
 service memcached restart
 }
 
@@ -791,6 +791,19 @@ done
 fi
 service monit restart
 }
+
+servercheck () {
+#--------------------------------------------------------------------------------------------------------------------------------
+# check and restart server daemons
+#--------------------------------------------------------------------------------------------------------------------------------
+SERVERCHECK=(php5-fpm apache2)
+#loop through array and copy monit configuration if binary exists
+for server in "${SERVERCHECK[@]}"
+do
+  if hash "${server}" 2>/dev/null; then
+        service ${server} restart
+  fi
+done
 
 #install_wp () {
 #--------------------------------------------------------------------------------------------------------------------------------

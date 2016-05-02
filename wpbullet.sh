@@ -169,30 +169,7 @@ sed -i s"/example.com/${WORDPRESSSITE}/g" /etc/nginx/sites-enabled/wordpress
 install_mariadb
 install_wordpress
 #Fix CloudFlare IP
-cat > /etc/nginx/conf.d/cloudflare.conf<<EOF
-#CloudFlare
-set_real_ip_from   199.27.128.0/21;
-set_real_ip_from   173.245.48.0/20;
-set_real_ip_from   103.21.244.0/22;
-set_real_ip_from   103.22.200.0/22;
-set_real_ip_from   103.31.4.0/22;
-set_real_ip_from   141.101.64.0/18;
-set_real_ip_from   108.162.192.0/18;
-set_real_ip_from   190.93.240.0/20;
-set_real_ip_from   188.114.96.0/20;
-set_real_ip_from   197.234.240.0/22;
-set_real_ip_from   198.41.128.0/17;
-set_real_ip_from   162.158.0.0/15;
-set_real_ip_from   104.16.0.0/12;
-set_real_ip_from   172.64.0.0/13;
-set_real_ip_from   2400:cb00::/32;
-set_real_ip_from   2606:4700::/32;
-set_real_ip_from   2803:f800::/32;
-set_real_ip_from   2405:b500::/32;
-set_real_ip_from   2405:8100::/32;
-#Set the real ip header
-real_ip_header     CF-Connecting-IP;
-EOF
+enable_cloudflare
 service nginx restart
 service php5-fpm restart
 
@@ -214,31 +191,8 @@ cp configs/default.vcl /etc/varnish/default.vcl
 sed -i s"/Web.Server.IP/${SERVERIP}/" /etc/varnish/default.vcl
 install_wordpress
 #Fix CloudFlare IP
-cat > /etc/nginx/conf.d/cloudflare.conf<<EOF
-#CloudFlare
-set_real_ip_from   199.27.128.0/21;
-set_real_ip_from   173.245.48.0/20;
-set_real_ip_from   103.21.244.0/22;
-set_real_ip_from   103.22.200.0/22;
-set_real_ip_from   103.31.4.0/22;
-set_real_ip_from   141.101.64.0/18;
-set_real_ip_from   108.162.192.0/18;
-set_real_ip_from   190.93.240.0/20;
-set_real_ip_from   188.114.96.0/20;
-set_real_ip_from   197.234.240.0/22;
-set_real_ip_from   198.41.128.0/17;
-set_real_ip_from   162.158.0.0/15;
-set_real_ip_from   104.16.0.0/12;
-set_real_ip_from   172.64.0.0/13;
-set_real_ip_from   2400:cb00::/32;
-set_real_ip_from   2606:4700::/32;
-set_real_ip_from   2803:f800::/32;
-set_real_ip_from   2405:b500::/32;
-set_real_ip_from   2405:8100::/32;
-#Set the real ip header
-set_real_ip_from   127.0.0.1/32;
-real_ip_header     X-Actual-IP;
-EOF
+enable_cloudflare
+sed -i s"/CF-Connecting-IP/X-Actual-IP/g" /etc/nginx/conf.d/cloudflare.conf
 service nginx restart
 service php5-fpm restart
 service varnish restart
@@ -275,31 +229,7 @@ install_wordpress
 #chmod 755 /var/www/${WORDPRESSSITE}/
 #chmod 644 /var/www/${WORDPRESSSITE}/wp-config.php
 #Fix CloudFlare IP
-cat > /etc/nginx/conf.d/cloudflare.conf<<EOF
-#CloudFlare
-set_real_ip_from   199.27.128.0/21;
-set_real_ip_from   173.245.48.0/20;
-set_real_ip_from   103.21.244.0/22;
-set_real_ip_from   103.22.200.0/22;
-set_real_ip_from   103.31.4.0/22;
-set_real_ip_from   141.101.64.0/18;
-set_real_ip_from   108.162.192.0/18;
-set_real_ip_from   190.93.240.0/20;
-set_real_ip_from   188.114.96.0/20;
-set_real_ip_from   197.234.240.0/22;
-set_real_ip_from   198.41.128.0/17;
-set_real_ip_from   162.158.0.0/15;
-set_real_ip_from   104.16.0.0/12;
-set_real_ip_from   172.64.0.0/13;
-set_real_ip_from   2400:cb00::/32;
-set_real_ip_from   2606:4700::/32;
-set_real_ip_from   2803:f800::/32;
-set_real_ip_from   2405:b500::/32;
-set_real_ip_from   2405:8100::/32;
-#Set the real ip header
-set_real_ip_from   127.0.0.1/32;
-real_ip_header     X-Actual-IP;
-EOF
+enable_cloudflare
 service nginx restart
 service php5-fpm restart
 service varnish restart
@@ -321,8 +251,8 @@ cp $NGINXCONFIG /etc/nginx/sites-available/reverseproxy
 ln -s /etc/nginx/sites-available/reverseproxy /etc/nginx/sites-enabled/reverseproxy
 sed -i s"/example.com/${WORDPRESSSITE}/g" /etc/nginx/sites-enabled/reverseproxy
 sed -i s"/Web.Server.IP/${SERVERIP}/g" /etc/nginx/sites-enabled/reverseproxy
-service nginx restart
 service apache2 restart
+service nginx restart
 }
 
 install_apache () {
@@ -370,6 +300,37 @@ RewriteRule . /index.php [L]
 EOF
 chown -R www-data:www-data /var/www
 service apache2 restart
+}
+
+enable_cloudflare () {
+#--------------------------------------------------------------------------------------------------------------------------------
+# Enable CloudFlare for nginx
+#--------------------------------------------------------------------------------------------------------------------------------
+cat > /etc/nginx/conf.d/cloudflare.conf<<EOF
+#CloudFlare
+set_real_ip_from   199.27.128.0/21;
+set_real_ip_from   173.245.48.0/20;
+set_real_ip_from   103.21.244.0/22;
+set_real_ip_from   103.22.200.0/22;
+set_real_ip_from   103.31.4.0/22;
+set_real_ip_from   141.101.64.0/18;
+set_real_ip_from   108.162.192.0/18;
+set_real_ip_from   190.93.240.0/20;
+set_real_ip_from   188.114.96.0/20;
+set_real_ip_from   197.234.240.0/22;
+set_real_ip_from   198.41.128.0/17;
+set_real_ip_from   162.158.0.0/15;
+set_real_ip_from   104.16.0.0/12;
+set_real_ip_from   172.64.0.0/13;
+set_real_ip_from   2400:cb00::/32;
+set_real_ip_from   2606:4700::/32;
+set_real_ip_from   2803:f800::/32;
+set_real_ip_from   2405:b500::/32;
+set_real_ip_from   2405:8100::/32;
+#Set the real ip header
+set_real_ip_from   127.0.0.1/32;
+real_ip_header     CF-Connecting-IP;
+EOF
 }
 
 install_dotdeb () {

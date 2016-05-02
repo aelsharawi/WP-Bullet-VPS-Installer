@@ -355,12 +355,21 @@ a2enmod ssl
 a2dissite 000-default
 a2ensite ${WORDPRESSSITE}
 a2ensite ${WORDPRESSSITE}ssl
-service apache2 restart
 install_mariadb
 install_wordpress
-touch /var/www/${WORDPRESSSITE}/.htaccess
+cat > /var/www/${WORDPRESSSITE}/.htaccess<<EOF
+# BEGIN WordPress
+<IfModule mod_rewrite.c>
+RewriteEngine On
+RewriteBase /
+RewriteRule ^index\.php\$ - [L]
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule . /index.php [L]
+</IfModule>
+EOF
 chown -R www-data:www-data /var/www
-
+service apache2 restart
 }
 
 install_dotdeb () {

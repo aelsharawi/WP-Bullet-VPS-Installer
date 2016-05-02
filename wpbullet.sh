@@ -11,6 +11,7 @@ apt-get update -qq
 if dpkg-query -W wget debconf-utils whiptail; then
 echo "Necessary programs installed :)"
 else
+echo "Installing necessary programs for installer"
 apt-get install wget debconf-utils whiptail -qq -y
 #debconf-apt-progress -- apt-get upgrade -y
 fi
@@ -804,6 +805,7 @@ do
         service ${server} restart
   fi
 done
+}
 
 #install_wp () {
 #--------------------------------------------------------------------------------------------------------------------------------

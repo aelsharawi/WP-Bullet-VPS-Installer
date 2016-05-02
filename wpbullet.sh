@@ -222,6 +222,7 @@ install_apache
 #fix apache ports to listen on 8080
 sed -i s"/80/8080/g" /etc/apache2/ports.conf
 sed -i s"/80/8080/g" /etc/apache2/sites-available/${WORDPRESSSITE}.conf
+service apache2 restart
 #nginx reverse proxy part
 install_nginx
 NGINXCONFIG=$(find / -iname reverseproxy | grep configs)
@@ -229,7 +230,6 @@ cp $NGINXCONFIG /etc/nginx/sites-available/reverseproxy
 ln -s /etc/nginx/sites-available/reverseproxy /etc/nginx/sites-enabled/reverseproxy
 sed -i s"/example.com/${WORDPRESSSITE}/g" /etc/nginx/sites-enabled/reverseproxy
 sed -i s"/Web.Server.IP/${SERVERIP}/g" /etc/nginx/sites-enabled/reverseproxy
-service apache2 restart
 service nginx restart
 }
 

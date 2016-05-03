@@ -486,7 +486,7 @@ phpize > /dev/null
 ./configure > /dev/null
 make > /dev/null
 make install > /dev/null
-PHPINI=($(find / -iname php.ini))
+PHPINI=($(find / -iname php.ini | grep 5))
 for ini in "${PHPINI[@]}"
 do
   echo "extension=suhosin.so" >> "${ini}"
@@ -562,7 +562,7 @@ phpize > /dev/null
 ./configure > /dev/null
 make > /dev/null
 make install
-PHPINI=($(find / -iname conf.d | grep php))
+PHPINI=($(find / -iname conf.d | grep php | grep 5))
 for ini in "${PHPINI[@]}"
 do
   echo "extension=redis.so" > "${ini}/30-redis.ini"
@@ -648,7 +648,7 @@ phpize
 ./configure --prefix=/usr --enable-memcached-igbinary --enable-memcached-json --enable-memcached-msgpack
 make
 make install
-PHPINI=($(find / -iname conf.d | grep php))
+PHPINI=($(find / -iname conf.d | grep php | grep 5))
 for ini in "${PHPINI[@]}"
 do
   echo "extension=memcached.so" >> "${ini}/30-memcached.ini"

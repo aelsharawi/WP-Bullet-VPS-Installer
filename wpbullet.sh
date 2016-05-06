@@ -500,7 +500,7 @@ install_redis () {
 # Install redis
 #--------------------------------------------------------------------------------------------------------------------------------
 debconf-apt-progress -- apt-get update
-debconf-apt-progress -- apt-get install php5-dev build-essential -y
+debconf-apt-progress -- apt-get install php5-dev libtool-bin build-essential -y
 cd /tmp
 #build redis
 wget http://download.redis.io/redis-stable.tar.gz
@@ -558,6 +558,7 @@ debconf-apt-progress -- git -y
 git clone https://github.com/phpredis/phpredis
 cd phpredis
 echo "Building Redis pecl extension"
+libtoolize
 phpize > /dev/null
 ./configure > /dev/null
 make > /dev/null

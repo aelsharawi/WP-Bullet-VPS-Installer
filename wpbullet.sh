@@ -641,6 +641,7 @@ service memcached start
 cd /tmp
 git clone https://github.com/php-memcached-dev/php-memcached -b php7
 cd php-memcached
+libtoolize
 phpize
 #--disable-memcached-sasl --enable-memcached-json --enable-memcached-igbinary
 ./configure --prefix=/usr --enable-memcached-igbinary --enable-memcached-json --enable-memcached-msgpack

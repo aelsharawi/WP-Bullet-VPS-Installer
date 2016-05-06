@@ -497,6 +497,7 @@ install_redis () {
 #--------------------------------------------------------------------------------------------------------------------------------
 # Install redis
 #--------------------------------------------------------------------------------------------------------------------------------
+install_dotdeb
 debconf-apt-progress -- apt-get update
 debconf-apt-progress -- apt-get install php7.0-dev build-essential -y
 cd /tmp
@@ -572,6 +573,7 @@ install_memcached () {
 #--------------------------------------------------------------------------------------------------------------------------------
 # Install memcached
 #--------------------------------------------------------------------------------------------------------------------------------
+install_dotdeb
 debconf-apt-progress -- apt-get update
 debconf-apt-progress -- apt-get install libmemcached* memcached libanyevent-perl libyaml-perl libterm-readkey-perl libevent-dev libsasl2-2 sasl2-bin libsasl2-2 libsasl2-dev libsasl2-modules php7.0-dev php7.0-json php7.0-igbinary php7.0-msgpack pkg-config libtool-bin build-essential -y
 MEMCACHELATEST=$(wget -q http://www.memcached.org -O - | grep tar.gz | awk -F "[\"]" '{print $2}')

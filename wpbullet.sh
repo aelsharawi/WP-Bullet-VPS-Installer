@@ -575,7 +575,7 @@ install_memcached () {
 # Install memcached
 #--------------------------------------------------------------------------------------------------------------------------------
 debconf-apt-progress -- apt-get update
-debconf-apt-progress -- apt-get install libmemcached* memcached libanyevent-perl libyaml-perl libterm-readkey-perl libevent-dev php5-dev php5-json php5-igbinary php5-msgpack pkg-config build-essential -y
+debconf-apt-progress -- apt-get install libmemcached* memcached libanyevent-perl libyaml-perl libterm-readkey-perl libevent-dev php5-dev php5-json php5-igbinary php5-msgpack pkg-config libtool-bin build-essential -y
 MEMCACHELATEST=$(wget -q http://www.memcached.org -O - | grep tar.gz | awk -F "[\"]" '{print $2}')
 cd /tmp
 wget -q $MEMCACHELATEST -O memcached.tar.gz

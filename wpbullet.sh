@@ -275,6 +275,8 @@ RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteRule . /index.php [L]
 </IfModule>
+#prevent directory listing
+Options -Indexes
 EOF
 chown -R www-data:www-data /var/www
 service apache2 restart

@@ -1,4 +1,4 @@
-# [WP Bullet](https://wp-bullet.com) WordPress VPS Installer
+# [WP Bullet](https://wp-bullet.com) VPS Installer
 The provisioning tool for preconfiguring a VPS for WordPress on a Debian 8 x64 system, it may work on Ubuntu 15.x and later
 
 **You should only use this on a fresh VPS!**

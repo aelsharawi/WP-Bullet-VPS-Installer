@@ -4,6 +4,8 @@ if [ $(id -u) != "0" ]; then
     echo "You must be root to run this script, use root or a sudo user."
     exit 1
 fi
+#PHPTYPE=($(apt-cache search --names-only 'php.*(igbinary|gd|msgpack)$' | awk '{print $1}'))
+#apt-get install ${PHPTYPE[@]}
 
 #check some essential software is installed
 echo "Doing intial update, please wait"

@@ -6,6 +6,7 @@ if [ $(id -u) != "0" ]; then
 fi
 #PHPTYPE=($(apt-cache search --names-only 'php.*(igbinary|gd|msgpack)$' | awk '{print $1}'))
 #apt-get install ${PHPTYPE[@]}
+#wget https://raw.githubusercontent.com/wpbullet/WP-Bullet-VPS-Installer/php7/wpbullet.sh -O destination
 
 #check some essential software is installed
 echo "Doing intial update, please wait"

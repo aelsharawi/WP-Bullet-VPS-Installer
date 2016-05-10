@@ -728,11 +728,11 @@ if [ -e /var/run/miniserv.pid ]; then
 wget https://raw.githubusercontent.com/wpbullet/WP-Bullet-VPS-Installer/master/configs/monit/webmin -O /etc/monit/conf.d/webmin
 fi
 #make sure nginx is listening on the right port
-if hash nginx  2>/dev/null; then
+if hash nginx 2>/dev/null; then
 SITELIST=($(ls -lh /etc/nginx/sites-enabled/ | awk '{print $9}'))
 for SITE in ${SITELIST[@]};
 do
-if (grep "listen 8080;" /etc/nginx/sites-enabled/$SITE >/dev/null); then
+if (grep "listen 80;" /etc/nginx/sites-enabled/$SITE >/dev/null); then
 sed -i 's/8080/80/' /etc/monit/conf.d/nginx
 fi
 if (grep "listen 443;" /etc/nginx/sites-enabled/$SITE >/dev/null); then

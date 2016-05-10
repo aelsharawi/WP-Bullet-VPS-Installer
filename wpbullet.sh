@@ -447,14 +447,19 @@ bash /opt/csf/install.sh
 mv /etc/csf/csf.conf /etc/csf/csf.conf.bak
 wget https://raw.githubusercontent.com/wpbullet/WP-Bullet-VPS-Installer/master/configs/csf.conf -O /etc/csf/csf.conf
 csf -r > /dev/null
+#webmin modules
+WEBMINPATH=/usr/share/webmin
+if [ -d "$WEBMINPATH" ]; then
 #install csf webmin module
-cd /usr/share/webmin
+cd $WEBMINPATH
 perl install-module.pl /etc/csf/csfwebmin.tgz
 #install nginx webmin module
+if hash nginx 2> /dev/null; then
 cd /tmp
 wget -q http://www.justindhoffman.com/sites/justindhoffman.com/files/nginx-0.08.wbm__0.gz
-cd /usr/share/webmin
+cd $WEBMINPATH
 perl install-module.pl /tmp/nginx-0.08.wbm__0.gz
+fi
 #install opcache webmin module
 #cd /tmp
 #wget http://github.com/jesucarr/webmin-php-opcache-status/releases/download/v1.0/php-opcache-status.wbm.gz
@@ -463,8 +468,9 @@ perl install-module.pl /tmp/nginx-0.08.wbm__0.gz
 #install php module
 cd /tmp
 wget -q http://www.webmin.com/webmin/download/modules/phpini.wbm.gz
-cd /usr/share/webmin
+cd $WEBMINPATH
 perl install-module.pl /tmp/phpini.wbm.gz
+fi
 echo "CSF Firewall is installed, configure it with this guide"
 }
 

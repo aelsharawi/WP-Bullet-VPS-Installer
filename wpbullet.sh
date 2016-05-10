@@ -732,11 +732,11 @@ if hash nginx 2>/dev/null; then
 SITELIST=($(ls -lh /etc/nginx/sites-enabled/ | awk '{print $9}'))
 for SITE in ${SITELIST[@]};
 do
-if (grep "listen 80;" /etc/nginx/sites-enabled/$SITE >/dev/null); then
-sed -i 's/8080/80/' /etc/monit/conf.d/nginx
+if (grep "listen 8080;" /etc/nginx/sites-enabled/$SITE >/dev/null); then
+sed -i 's/80/8080/' /etc/monit/conf.d/nginx
 fi
 if (grep "listen 443;" /etc/nginx/sites-enabled/$SITE >/dev/null); then
-sed -i 's/8080/443/' /etc/monit/conf.d/nginx
+sed -i 's/80/443/' /etc/monit/conf.d/nginx
 fi
 done
 fi

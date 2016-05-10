@@ -445,7 +445,7 @@ cd /opt/csf
 bash /opt/csf/install.sh
 #copy template over
 mv /etc/csf/csf.conf /etc/csf/csf.conf.bak
-wge https://raw.githubusercontent.com/wpbullet/WP-Bullet-VPS-Installer/master/configs/csf.conf -O /etc/csf/csf.conf
+wget https://raw.githubusercontent.com/wpbullet/WP-Bullet-VPS-Installer/master/configs/csf.conf -O /etc/csf/csf.conf
 csf -r > /dev/null
 #install csf webmin module
 cd /usr/share/webmin
@@ -725,7 +725,7 @@ do
 done
 #hashing webmin doesn't work so check for the pid file instead
 if [ -e /var/run/miniserv.pid ]; then
-wget wget https://raw.githubusercontent.com/wpbullet/WP-Bullet-VPS-Installer/master/configs/monit/webmin -O /etc/monit/conf.d/webmin
+wget https://raw.githubusercontent.com/wpbullet/WP-Bullet-VPS-Installer/master/configs/monit/webmin -O /etc/monit/conf.d/webmin
 fi
 #make sure nginx is listening on the right port
 if hash nginx  2>/dev/null; then

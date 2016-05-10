@@ -119,7 +119,7 @@ get_user_input
 #fi
 install_dotdeb
 install_nginx
-cp configs/nginx/wordpressfastcgi /etc/nginx/sites-available/wordpress
+wget https://raw.githubusercontent.com/wpbullet/WP-Bullet-VPS-Installer/php7/configs/nginx/wordpressfastcgi -O /etc/nginx/sites-available/wordpress
 ln -s /etc/nginx/sites-available/wordpress /etc/nginx/sites-enabled/wordpress
 sed -i s"/example.com/${WORDPRESSSITE}/g" /etc/nginx/sites-enabled/wordpress
 install_mariadb
@@ -143,7 +143,7 @@ mkdir -p /etc/nginx/ssl
 openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout /etc/nginx/ssl/nginx.key -out /etc/nginx/ssl/nginx.crt -subj "/C=/ST=/L=/O=Company Name/OU=Org/CN=${WORDPRESSSITE}"
 install_dotdeb
 install_nginx
-cp configs/nginx/wordpressfastcgissl /etc/nginx/sites-available/wordpress
+wget https://raw.githubusercontent.com/wpbullet/WP-Bullet-VPS-Installer/php7/configs/nginx/wordpressfastcgissl -O /etc/nginx/sites-available/wordpress
 ln -s /etc/nginx/sites-available/wordpress /etc/nginx/sites-enabled/wordpress
 sed -i s"/example.com/${WORDPRESSSITE}/g" /etc/nginx/sites-enabled/wordpress
 install_mariadb
@@ -162,12 +162,12 @@ install_nginx_varnish () {
 get_user_input
 install_dotdeb
 install_nginx
-cp configs/nginx/wordpressvarnish /etc/nginx/sites-available/wordpress
+wget https://raw.githubusercontent.com/wpbullet/WP-Bullet-VPS-Installer/php7/configs/nginx/wordpressvarnish -O /etc/nginx/sites-available/wordpress
 ln -s /etc/nginx/sites-available/wordpress /etc/nginx/sites-enabled/wordpress
 sed -i s"/example.com/${WORDPRESSSITE}/g" /etc/nginx/sites-enabled/wordpress
 install_mariadb
 install_varnish
-cp configs/default.vcl /etc/varnish/default.vcl
+wget https://raw.githubusercontent.com/wpbullet/WP-Bullet-VPS-Installer/php7/configs/default.vcl -O /etc/varnish/default.vcl
 sed -i s"/Web.Server.IP/${SERVERIP}/" /etc/varnish/default.vcl
 install_wordpress
 #Fix CloudFlare IP
@@ -185,12 +185,12 @@ install_nginx_varnish_haproxy () {
 get_user_input
 install_dotdeb
 install_nginx
-cp configs/nginx/wordpressvarnish /etc/nginx/sites-available/wordpress
+wget https://raw.githubusercontent.com/wpbullet/WP-Bullet-VPS-Installer/php7/configs/nginx/wordpressvarnish -O /etc/nginx/sites-available/wordpress
 ln -s /etc/nginx/sites-available/wordpress /etc/nginx/sites-enabled/wordpress
 sed -i s"/example.com/${WORDPRESSSITE}/g" /etc/nginx/sites-enabled/wordpress
 install_mariadb
 install_varnish
-cp configs/default.vcl /etc/varnish/default.vcl
+wget https://raw.githubusercontent.com/wpbullet/WP-Bullet-VPS-Installer/php7/configs/default.vcl -O /etc/varnish/default.vcl
 sed -i s"/Web.Server.IP/${SERVERIP}/" /etc/varnish/default.vcl
 sed -i s"/DOMAIN/${WORDPRESSSITE}/" /etc/varnish/default.vcl
 install_haproxy
@@ -228,8 +228,7 @@ sed -i s"/80/8080/g" /etc/apache2/sites-available/${WORDPRESSSITE}.conf
 service apache2 restart
 #nginx reverse proxy part
 install_nginx
-NGINXCONFIG=$(find / -iname reverseproxy | grep configs)
-cp $NGINXCONFIG /etc/nginx/sites-available/reverseproxy
+wget https://raw.githubusercontent.com/wpbullet/WP-Bullet-VPS-Installer/php7/configs/nginx/reverseproxy -O  /etc/nginx/sites-available/reverseproxy
 ln -s /etc/nginx/sites-available/reverseproxy /etc/nginx/sites-enabled/reverseproxy
 sed -i s"/example.com/${WORDPRESSSITE}/g" /etc/nginx/sites-enabled/reverseproxy
 sed -i s"/Web.Server.IP/${SERVERIP}/g" /etc/nginx/sites-enabled/reverseproxy
@@ -250,10 +249,9 @@ cat > /etc/apache2/mods-enabled/dir.conf <<EOF
     DirectoryIndex index.php index.html index.cgi index.pl index.xhtml index.htm
 </IfModule>
 EOF
-APACHEDIR=$(find / -iname apache | grep configs)
-cp $APACHEDIR/apache2.conf /etc/apache2/apache2.conf
-cp $APACHEDIR/apache2vhost /etc/apache2/sites-available/${WORDPRESSSITE}.conf
-cp $APACHEDIR/apache2vhostssl /etc/apache2/sites-available/${WORDPRESSSITE}ssl.conf
+wget https://raw.githubusercontent.com/wpbullet/WP-Bullet-VPS-Installer/php7/configs/apache/apache2.conf -O /etc/apache2/apache2.conf
+wget https://raw.githubusercontent.com/wpbullet/WP-Bullet-VPS-Installer/php7/configs/apache/apache2vhost -O /etc/apache2/sites-available/${WORDPRESSSITE}.conf
+wget https://raw.githubusercontent.com/wpbullet/WP-Bullet-VPS-Installer/php7/configs/apache/apache2vhostssl -O /etc/apache2/sites-available/${WORDPRESSSITE}ssl.conf
 sed -i s"/example.com/${WORDPRESSSITE}/g" /etc/apache2/sites-available/${WORDPRESSSITE}.conf
 sed -i s"/example.com/${WORDPRESSSITE}/g" /etc/apache2/sites-available/${WORDPRESSSITE}ssl.conf
 #install_mariadb
@@ -333,11 +331,10 @@ install_nginx () {
 install_dotdeb
 debconf-apt-progress -- apt-get update
 debconf-apt-progress -- apt-get install nginx nginx-extras -y
-NGINXCONFIG=$(find / -iname configs)
-cp $NGINXCONFIG/nginx/nginx.conf /etc/nginx/nginx.conf
+wget https://raw.githubusercontent.com/wpbullet/WP-Bullet-VPS-Installer/php7/configs/nginx/nginx.conf -O /etc/nginx/nginx.conf
 unlink /etc/nginx/sites-enabled/default
 debconf-apt-progress -- apt-get install curl php7.0-curl php7.0-mysql php7.0-cli php7.0-fpm php7.0-gd -y
-cp $NGINXCONFIG/www.conf /etc/php/7.0/fpm/pool.d/www.conf
+wget https://github.com/wpbullet/WP-Bullet-VPS-Installer/raw/php7/configs/www.conf /etc/php/7.0/fpm/pool.d/www.conf
 }
 
 install_wordpress () {
@@ -376,8 +373,7 @@ echo "mariadb-server-10.0 mysql-server/root_password_again password ${MYSQLROOTP
 debconf-apt-progress -- apt-get -y install mariadb-server mariadb-client
 service mysql restart
 mv /etc/mysql/my.cnf /etc/mysql/my.cnf.bak
-MYCONF=$(find / -iname my.cnf | grep configs)
-cp $MYCONF /etc/mysql/my.cnf
+wget https://raw.githubusercontent.com/wpbullet/WP-Bullet-VPS-Installer/php7/configs/my.cnf -O /etc/mysql/my.cnf
 service mysql reload
 #create the wordpress sql database
 mysql -u root -p${MYSQLROOTPASS} -e "CREATE USER ${WORDPRESSSQLUSER}@localhost IDENTIFIED BY '${WORDPRESSSQLPASS}';"
@@ -420,7 +416,7 @@ EOF
 debconf-apt-progress -- apt-get update
 debconf-apt-progress -- apt-get install openssl haproxy -y
 mv /etc/haproxy/haproxy.cfg /etc/haproxy/haproxy.cfg.bak
-cp configs/haproxy.cfg /etc/haproxy/haproxy.cfg
+wget https://raw.githubusercontent.com/wpbullet/WP-Bullet-VPS-Installer/php7/configs/haproxy.cfg -O /etc/haproxy/haproxy.cfg
 #openssl req -new -newkey rsa:2048 -nodes -out /etc/ssl/wpbullet.pem -keyout /etc/ssl/wpbullet.pem -subj "/C=US/ST=Oregon/L=Portland/O=Company Name/OU=Org/CN=www.example.com"
 openssl req -new -x509 -days 365 -nodes -out /etc/ssl/wp-bullet.pem -keyout /etc/ssl/wp-bullet.pem -subj "/C=/ST=/L=/O=Company Name/OU=Org/CN=${WORDPRESSSITE}"
 
@@ -451,9 +447,8 @@ tar -xf csf.tgz -C /opt
 cd /opt/csf
 bash /opt/csf/install.sh
 #copy template over
-CSFTEMPLATE=$(find / -iname csf.conf | grep configs)
 mv /etc/csf/csf.conf /etc/csf/csf.conf.bak
-cp $CSFTEMPLATE /etc/csf/csf.conf
+wget https://raw.githubusercontent.com/wpbullet/WP-Bullet-VPS-Installer/php7/configs/csf.conf -O /etc/csf/csf.conf /etc/csf/csf.conf
 csf -r > /dev/null
 #install csf webmin module
 cd /usr/share/webmin
@@ -489,7 +484,7 @@ phpize > /dev/null
 ./configure > /dev/null
 make > /dev/null
 make install > /dev/null
-PHPINI=($(find / -iname php.ini))
+PHPINI=($(find /etc -iname php.ini))
 for ini in "${PHPINI[@]}"
 do
   echo "extension=suhosin7.so" >> "${ini}"
@@ -566,7 +561,7 @@ phpize > /dev/null
 ./configure > /dev/null
 make > /dev/null
 make install
-PHPINI=($(find / -iname conf.d | grep php))
+PHPINI=($(find /etc -iname conf.d | grep php))
 for ini in "${PHPINI[@]}"
 do
   echo "extension=redis.so" > "${ini}/30-redis.ini"
@@ -654,7 +649,7 @@ phpize
 ./configure --prefix=/usr --enable-memcached-igbinary --enable-memcached-json --enable-memcached-msgpack
 make
 make install
-PHPINI=($(find / -iname conf.d | grep php))
+PHPINI=($(find /etc -iname conf.d | grep php))
 for ini in "${PHPINI[@]}"
 do
   echo "extension=memcached.so" >> "${ini}/30-memcached.ini"
@@ -725,12 +720,12 @@ MONITCHECK=(nginx php7.0-fpm mysqld varnishd haproxy redis-server memcached lfd 
 for monit in "${MONITCHECK[@]}"
 do
   if hash "${monit}"  2>/dev/null; then
-        cp $MONITCONFIGSFOLDER/${monit} /etc/monit/conf.d/${monit}
+        wget https://raw.githubusercontent.com/wpbullet/WP-Bullet-VPS-Installer/php7/configs/monit/${monit} -O /etc/monit/conf.d/${monit}
   fi
 done
 #hashing webmin doesn't work so check for the pid file instead
 if [ -e /var/run/miniserv.pid ]; then
-cp $MONITCONFIGSFOLDER/webmin /etc/monit/conf.d/webmin
+wget https://raw.githubusercontent.com/wpbullet/WP-Bullet-VPS-Installer/master/configs/monit/webmin -O /etc/monit/conf.d/webmin
 fi
 #make sure nginx is listening on the right port
 if hash nginx  2>/dev/null; then

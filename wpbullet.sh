@@ -361,6 +361,7 @@ wp option update permalink_structure '/%postname%' --allow-root
 chown -R www-data:www-data /var/www/${WORDPRESSSITE}/
 chmod 755 /var/www/${WORDPRESSSITE}/
 chmod 644 /var/www/${WORDPRESSSITE}/wp-config.php
+chmod 644 /var/www/${WORDPRESSSITE}/wp-admin/index.php
 }
 
 install_mariadb () {

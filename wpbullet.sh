@@ -318,6 +318,16 @@ install_dotdeb () {
 #--------------------------------------------------------------------------------------------------------------------------------
 # Install dotdeb repo
 #--------------------------------------------------------------------------------------------------------------------------------
+#check release
+release=($(lsb_release -a | grep Codename | awk '{print $2}'))
+for i in ${!release[@]}
+do
+	item="${release[i]}"
+	if [ "$item" == "No LSB modules are available." ]; then
+	unset release[i]
+	fi
+done
+#echo $release shows wheezy, jessie etc
 wget -qO - http://www.dotdeb.org/dotdeb.gpg | apt-key add -
 cat > /etc/apt/sources.list.d/dotdeb.list<<EOF
 deb http://packages.dotdeb.org jessie all

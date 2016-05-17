@@ -30,7 +30,7 @@ if ($http_cookie ~* "comment_author_|wordpress_(?!test_cookie)|wp-postpass_" ) {
         proxy_cache WORDPRESS-PROXY; 
         proxy_cache_revalidate on; 
         proxy_ignore_headers  Expires Cache-Control; 
-        proxy_cache_use_stale  error timeout invalid_header updating http_502;
+        proxy_cache_use_stale  error timeout invalid_header updating http_500 http_502 http_503 http_504;
         # allow bypass for requests that come from Web Server
         proxy_cache_bypass $bypass;
         # do not cache WordPress admins or logged in users
